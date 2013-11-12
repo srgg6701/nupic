@@ -1,10 +1,6 @@
 // JavaScript Document
 $(function(){
-	$('ul:not(.empty) > li').each(function(index, element) {
-        $(this).text()[0]="0";
-    });
-	//console.log("Hello, Dude! Here I am.");
-	$('ul:not(.empty) > li > span').click( function(){
+	$('ul > li > span').click( function(){
 		$('>ul',$(this).parent()).fadeToggle(300);
 		return false;
 		/*var i=0;

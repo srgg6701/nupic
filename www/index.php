@@ -18,21 +18,36 @@
 	$head->appendChild($jq);
 	$head->appendChild($js);
 	
-	$uls=$doc->getElementsByTagName('ul');
+	$xpath = new DOMXPath($doc);
+	$uls = $xpath->query('//body/ul');
+	
+	//foreach($uls as $ul) echo "<div>length: ".$ul->childNodes->length."</div>";
+	
 	$ulLast=$uls->item($uls->length-1);
 	$ulLast->setAttribute('class','empty');
 	$uls->item(0)->setAttribute('class','empty');
-	$lis=$doc->getElementsByTagName('li');
-	$span=$doc->createElement('span');
-	foreach($uls as $ul){
-		if(!($ul->getAttribute('class')=='empty')){
-			$lis = $ul->getElementsByTagName('li');
-			foreach($lis as $i=>$li){
-				$spointer=$span->cloneNode();
-				$spointer->appendChild($doc->createTextNode('► '));				
-				$a=$li->getElementsByTagName('a')->item(0);
-				$li->insertBefore($spointer,$a);
+	
+	function dive($ul){
+		global $doc;
+		foreach($ul->getElementsByTagName('li') as $i=>$li){
+			$span=$doc->createElement('span');
+			$pointer=$doc->createTextNode('► ');
+			$span->appendChild($pointer);				
+			$a=$li->getElementsByTagName('a')->item(0);
+			$newSpan=$li->insertBefore($span,$a);
+			if($li->getElementsByTagName('ul')->length){
+				dive($newSpan);
 			}
+			unset($li);
+			$span=null;
+			$pointer=null;
+		}
+	}
+
+	foreach($uls as $ul){
+		//echo "<div>".$ul->nodeValue."</div>";
+		if(!($ul->getAttribute('class')=='empty')){
+			dive($ul);
 		}
 	}
 	// expose HTML:
