@@ -1,5 +1,6 @@
 <?	$doc=new DOMDocument();
-	$doc->loadHTMLFile('http://lists.numenta.org/pipermail/nupic_lists.numenta.org/2013-November/thread.html');
+	$month='http://lists.numenta.org/pipermail/nupic_lists.numenta.org/2013-November/';
+	$doc->loadHTMLFile($month.'thread.html');
 	$head=$doc->getElementsByTagName('head')->item(0);
 	// css:
 	$css=$doc->createElement('link');
@@ -28,19 +29,21 @@
 	$uls->item(0)->setAttribute('class','empty');
 	
 	function dive($ul){
-		global $doc;
+		global $doc,$month;
 		foreach($ul->getElementsByTagName('li') as $i=>$li){
 			$span=$doc->createElement('span');
 			$pointer=$doc->createTextNode('► ');
-			$span->appendChild($pointer);				
+			$span->appendChild($pointer);	
+			// http://lists.numenta.org/pipermail/nupic_lists.numenta.org/2013-November/001860.html			
 			$a=$li->getElementsByTagName('a')->item(0);
-			$newSpan=$li->insertBefore($span,$a);
+			$a->setAttribute('href',$month.$a->getAttribute('href'));
+			$newSpan=$li->insertBefore($span,$a);							
 			if($li->getElementsByTagName('ul')->length){
 				dive($newSpan);
+			}else{
+				$span->setAttribute('class','hidden');
 			}
 			unset($li);
-			$span=null;
-			$pointer=null;
 		}
 	}
 

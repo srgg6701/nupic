@@ -16,10 +16,16 @@ body > ul{
 }
 ul:not(.empty) 
 	li{
+	border-bottom: solid 1px #CCC;
 	list-style:none;
+	margin-bottom: 1px;
+	padding: 2px 0;
 }
 li > span{
 	cursor:pointer;
+}
+.hidden{
+	visibility:hidden;
 }
 /*
 ul:not(.empty) 
