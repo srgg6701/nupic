@@ -1,0 +1,30 @@
+@charset "utf-8";
+/* CSS Document */
+html, body{
+	height:100%;
+	margin:0;
+	padding:0;
+}
+body *{
+	box-sizing:border-box;
+}
+ul{
+	display:none;
+}
+body > ul{
+	display:block;
+}
+ul:not(.empty) 
+	li{
+	list-style:none;
+}
+li > span{
+	cursor:pointer;
+}
+/*
+ul:not(.empty) 
+	li:before{
+	content: '► ';
+}*/
+
+
