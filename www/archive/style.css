@@ -1,0 +1,82 @@
+@charset "utf-8";
+/* CSS Document */
+html, body{
+	height:100%;
+	margin:0;
+	padding:0;
+}
+body *{
+	box-sizing:border-box;
+}
+ul{
+	display:none;
+}
+body > ul{
+	display:block;
+}
+ul:not(.empty) 
+	li{
+	border-bottom: solid 1px #CCC;
+	list-style:none;
+	margin-bottom: 1px;
+	padding: 2px 0;
+}
+li > span{
+	cursor:pointer;
+}
+.hidden{
+	visibility:hidden;
+}
+iframe{
+	border:none;
+	height:100%;
+	width:100%;
+}
+menu{
+    background-color: #eaebec;
+    border-bottom: solid 2px #ccc;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+menu > ul{
+	display:table;
+	margin: 0;
+	padding: 0;
+}
+
+menu ul li{
+	border-bottom:none !important;
+	display:table-cell;
+	list-style: none;
+	padding: 8px !important;
+	position:relative;
+}
+menu ul li a{
+	margin-right:10px;
+}
+menu >ul li ul{
+	box-shadow: 4px 4px 10px #ccc;
+	left: 6px;
+	padding: 0;
+	position:absolute;
+	top: 23px;
+}
+menu >ul li ul li{
+	border: solid 1px #ccc !important;
+	background-color:white;
+	display: block;
+	margin-bottom: -2px !important;
+	padding: 5px 10px !important;
+	white-space: nowrap;
+}
+.no_scroll{
+	overflow:hidden;
+}
+/*
+ul:not(.empty) 
+	li:before{
+	content: '► ';
+}*/
+
+

@@ -1,0 +1,46 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Nupic mailing list</title>
+<link href="style.css" rel="stylesheet" type="text/css">
+<script src="../jquery-1.8.1.js"></script>
+<script src="js.js"></script>
+<script>
+function loadPage(Url){
+	//document.getElementsByName('frm')[0].src=Url;
+	window.frames['frm'].src=Url;
+	//chrome://bookmarks/#1744
+}
+$( function(){
+	$('menu ul li').mouseenter(function(){
+		$('>ul',this).show(100);
+	}).mouseleave(function(){
+		$('ul',this).hide(100);
+	});
+});
+</script>
+</head>
+<body class="no_scroll">
+<menu class="menu">
+	<ul>
+    	<li>
+        	<a href="http://lists.numenta.org/pipermail/nupic_lists.numenta.org/" target="frm">Archive</a> | </li>
+        <li><a href="file:///C:/Users/Srgg/AppData/Local/Google/Chrome/User%20Data/Default/Bookmarks">Favorites</a> | </li>
+        <li><a href="file:///B:/srgg6701/AI">srgg6701/AI</a> |</li>
+        <li>
+        	<a href="javascript:void()" onClick="loadPage('https://github.com/numenta');">Github</a>
+            	<ul>
+                	<li>
+                    	<a href="https://github.com/numenta/nupic/wiki/NuPIC-Architecture">NuPIC-Architecture</a>
+                    </li>
+                    <li>
+                        <a href="https://github.com/numenta/nupic/wiki/Development-Process">Development Process</a>
+                    </li>
+                </ul>
+            </li>
+    </ul>
+</menu>
+<iframe name="frm" src="http://lists.numenta.org/pipermail/nupic_lists.numenta.org/"></iframe>
+</body>
+</html>
