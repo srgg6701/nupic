@@ -9,12 +9,14 @@ tbody tr:first-child,
 tr td:first-child{
 	background-color:#eaebec;
 }
-
 td{
 	border:solid 1px #ccc;
 	height:40px;
 	line-height:40px;
 	text-align:center;
 	width:40px;
+}
+.active{
+    background-color: #666;
 }
 

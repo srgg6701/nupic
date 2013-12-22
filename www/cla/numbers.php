@@ -5,36 +5,7 @@
 <title>CLA</title>
 <link rel="stylesheet" type="text/css" href="css.css">
 <script src="../jquery-1.8.1.js"></script>
-<script>
-var Matrix={
-	headers:[],
-	walkThroughCells:function(row,first_tr){
-		$(row).each(function(indexTr, tr) {
-			$('td',tr).each(function(indexTd,td){
-				// skip the first column
-				if(indexTd){
-					if(first_tr) // only single iteration
-						Matrix.headers[indexTd-1]=$(td).text();
-					else{
-						td.id=Matrix.headers[indexTd-1]+[indexTr+1];
-						console.log('td.id = '+td.id);
-					}
-				} 
-            });
-		});
-		console.dir(Matrix.headers);
-	} 
-};
-$(function(){
-	var Mtrx=$('#Matrix');
-	// get table headers:
-	Matrix.walkThroughCells($('tr:first-child',Mtrx),true);
-	// set id id to the cells:
-	Matrix.walkThroughCells($('tr',Mtrx).slice(1));
-	//console.dir(Rows);
-});
-
-</script>
+<script src="js/matrix.js"></script>
 </head>
 <body>
 <table id="Matrix">
@@ -46,7 +17,7 @@ $(function(){
     <td>D</td>
     <td>E</td>
     <td>F</td>
-    <td>J</td>
+    <td>G</td>
     <td>H</td>
     <td>I</td>
     <td>J</td>
@@ -196,6 +167,32 @@ $(function(){
   </tr>
   <tr>
     <td>12</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>13</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+  </tr>
+  <tr>
+    <td>14</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
