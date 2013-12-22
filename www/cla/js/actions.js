@@ -12,11 +12,41 @@ $(function(){
         if($('#limit').val()=='0')
             $('#limit').val('10'); // by default, equals to the inputs length
     });
+    // manage errosion:
+    $('#erosion').on('click', function(){
+        //Matrix.erosion=this.checked; //console.log('Matrix.erosion = '+Matrix.erosion);
+        switchDistortionType(this);
+    });
+    // manage random offset:
+    $('#random_offset').on('click', function(){
+        switchDistortionType(this);
+        //Matrix.random_offset=this.checked; //console.log('Matrix.erosion = '+Matrix.erosion);
+    });
     // run or stop Matrix:
     $('#'+Matrix.switcher.button_id).on('click', function(){
         (!Matrix.run)? runMatrix():stopMatrix();
     });
 });
+
+/**
+ * Switch distortion types
+ */
+function switchDistortionType(obj) {
+    var distortion_type_alt, distortion_type=obj.id;
+    Matrix[distortion_type]=obj.checked;
+    if(distortion_type=='erosion'){
+        distortion_type_alt='random_offset';
+    }else{
+        if(distortion_type=='random_offset'){
+            distortion_type_alt='erosion';
+        }
+    } //console.log('distortion_type = '+distortion_type+', distortion_type_alt = '+distortion_type_alt);
+    if(obj.checked){
+        Matrix[distortion_type_alt]=false;
+        $('#'+distortion_type_alt).attr('checked', false);
+    }
+}
+
 /**
  * interval - ms duration
  * static - use static data from the beginning to the end, once
@@ -52,7 +82,7 @@ function runMatrix() { // Matrix's going to have you, Neo! :)
         + ' <div style="float: right">data: <b>' + inputNumber+'</b></div>'
                                  + '</div>');
     }
-    //
+    // ordered input
     if(static>0){
         var inputNumber=0;
         var staticInputs = [1,2,3,4,5,6,7,8,9,10];

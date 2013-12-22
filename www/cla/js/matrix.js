@@ -3,9 +3,21 @@ var Matrix={
     run:false,
 	obj:null,
 	headers:[],
+    random_offset:false,
+    erosion:false,
     corrections:{
         x:3,    // vertical offset
-        y:1     // horizontal offset
+        y:1,     // horizontal offset
+		randomOffset:function(set_offset){
+            var offset = 0;
+            //console.log('Matrix.erosion = '+Matrix.erosion);
+            if (Matrix.erosion||set_offset) {
+                offset = Math.round(Math.random() * (3 - 1) + 1);
+                if(Math.round(Math.random())==0) offset=-offset;
+                console.log('offset = '+offset);
+            }
+			return offset;
+		}
     },
 	lines:null,
     // set ids to the reception area elements (td in table):
@@ -49,6 +61,14 @@ var Matrix={
             //  counter for patterns element that matches for the current column
         */
         var patternStringElementsNumber, matrixRowNumber=this.corrections.x;
+        var hOffset = 0, vOffset=0;
+        if(Matrix.random_offset){
+            hOffset=Matrix.corrections.randomOffset(true);
+            vOffset=Matrix.corrections.randomOffset(true);
+        }else{
+            hOffset=true;
+            vOffset=true;
+        }
         for(var row in Pattern){ //console.log('row = '+row);
             matrixRowNumber++;
             /*  console.dir(this.headers); // A	B C	D E	F G	H I J
@@ -58,19 +78,24 @@ var Matrix={
              */
             patternStringElementsNumber=0;
             for (var i = 0, j=Pattern[row].length; i <= j; i++) {
+                
                 //console.groupCollapsed('i = '+i+', %cPattern[row].length = '+Pattern[row].length,'font-weight:bold');
                 //
                 for(var k=0, g = this.headers.length; k<g; k++){
                     //console.log('k='+k+', g= '+g+' this.headers[k] : Pattern[row][patternStringElementsNumber] = '+this.headers[k]+' : '+Pattern[row][patternStringElementsNumber]);
                     if(this.headers[k]==Pattern[row][patternStringElementsNumber]){
                         //console.log('cell.id: '+this.headers[k]+matrixRowNumber);
-                        $('#'+this.headers[k]+matrixRowNumber).addClass('active');
+                        if(hOffset){
+                            if(hOffset===true)
+                                hOffset=Matrix.corrections.randomOffset();
+                        }
+                        $('#'+this.headers[k+hOffset]+matrixRowNumber).addClass('active');
                         patternStringElementsNumber++;
                     }
                 } //console.groupEnd();
             }
         } //console.groupEnd();
-	},
+	}, 
 	// get reception area:
     getReceptionArea:function(){
 		this.lines=$('tr',this.obj).slice(1);
