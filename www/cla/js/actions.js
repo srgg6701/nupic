@@ -40,7 +40,7 @@ function switchDistortionType(obj) {
         if(distortion_type=='random_offset'){
             distortion_type_alt='erosion';
         }
-    } console.log('distortion_type = '+distortion_type+', distortion_type_alt = '+distortion_type_alt);
+    } //console.log('distortion_type = '+distortion_type+', distortion_type_alt = '+distortion_type_alt);
     if(obj.checked){
         Matrix[distortion_type_alt]=false;
         $('#'+distortion_type_alt).attr('checked', false);
@@ -87,14 +87,14 @@ function runMatrix() { // Matrix's going to have you, Neo! :)
         var inputNumber=0;
         var staticInputs = [1,2,3,4,5,6,7,8,9,10];
         //
-        console.log('staticInputs.length: '+staticInputs.length);
+        //console.log('staticInputs.length: '+staticInputs.length);
         var runMatrixAnyway = function(){ 
             //console.log('input index = '+(inputNumber+Matrix.corrections.y));           
             Matrix.feedInputs(inputNumber+Matrix.corrections.y);            
             inputNumber++; //console.log('inputNumber end = '+inputNumber);
             showCurrentInfo();
             if(limit){ //12
-                console.log('limit = '+limit+', inputNumber = '+inputNumber);
+                //console.log('limit = '+limit+', inputNumber = '+inputNumber);
                 if(limit==inputNumber) {// stop it before end comes
                     stopMatrix();
                 }else if(limit>staticInputs.length){ // 12>10 go on     
@@ -133,7 +133,6 @@ function runMatrix() { // Matrix's going to have you, Neo! :)
     Matrix.run=true;
     Matrix.switcher.changeBtnVal();
 }
-
 /**
  * Stop it, Neo!!! :)
  */

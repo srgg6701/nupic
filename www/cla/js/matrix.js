@@ -52,8 +52,7 @@ var Matrix={
 					}
 				} 
             });
-		});
-		//console.groupEnd();
+		}); //console.groupEnd();
 	},
 	// get feed-forward input (FFI):
     feedInputs:function(patternIndex){
@@ -64,22 +63,17 @@ var Matrix={
             //  counter for patterns element that matches for the current column
         */
         var patternStringElementsNumber, matrixRowNumber=this.corrections.x;
-        var hOffset = 0, vOffset=0;
+        var hOffset = 0;
         if(Matrix.random_offset){
-            console.log('%cMatrix.random_offset','color:red');
+            //console.log('%cMatrix.random_offset','color:red');
             hOffset=Matrix.corrections.randomOffset(true);
-            //vOffset=Matrix.corrections.randomOffset(true);
-            
         }
         if(Matrix.random_offset||Matrix.erosion)
             matrixRowNumber+=Matrix.corrections.randomOffset(true);
         for(var row in Pattern){ //console.log('row = '+row);
             matrixRowNumber++;
-            /*  console.dir(this.headers); // A	B C	D E	F G	H I J
+            /*  console.dir(this.headers); 
                 console.dir(Pattern[row]);  */
-            /*  3 : ['C','D','E','F']
-                4 :	['B','C','D','E','F']
-             */
             patternStringElementsNumber=0;
             for (var i = 0, j=Pattern[row].length; i <= j; i++) {
                 
@@ -92,7 +86,7 @@ var Matrix={
                         // if erosion has been set, get offsets value
                         if(Matrix.erosion){
                             hOffset=Matrix.corrections.randomOffset()-2;
-                            console.log('hOffset = '+hOffset);                            
+                            //console.log('hOffset = '+hOffset);                            
                         }
                         $('#'+this.headers[k+hOffset]+matrixRowNumber).addClass('active');
                         patternStringElementsNumber++;
@@ -111,7 +105,8 @@ var Matrix={
         btn_text:       'Stop it!',
         changeBtnVal:   function(){
             var btnVal = $('#'+Matrix.switcher.button_id).text();             
-            $('#'+Matrix.switcher.button_id).text(Matrix.switcher.btn_text);
+            $('#'+Matrix.switcher.button_id)
+                .text(Matrix.switcher.btn_text).toggleClass('start stop');
             Matrix.switcher.btn_text = btnVal;
         }
     }
