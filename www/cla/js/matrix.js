@@ -1,19 +1,21 @@
 var Matrix={
 	Id:'Matrix',
+    run:false,
 	obj:null,
 	headers:[],
     corrections:{
-        x:3,
-        y:1
+        x:3,    // vertical offset
+        y:1     // horizontal offset
     },
 	lines:null,
+    // set ids to the reception area elements (td in table):
 	makeMatrixMap:function(headers){
         //console.groupCollapsed('%cset Matrix map:','font-weight:bold');
         var row;
         if(headers){
             row=$('tr:first-child',this.obj);
         }else{
-            this.getMatrixlines();
+            this.getReceptionArea();
             row=this.lines; 
         }   //console.log('row: ');console.dir(row);
         var Mtrx = this;
@@ -38,16 +40,16 @@ var Matrix={
 		});
 		//console.groupEnd();
 	},
-	//
+	// get feed-forward input (FFI):
     feedInputs:function(patternIndex){
         $('td',this.lines).removeClass('active');
-        var Pattern = inputs[patternIndex];
+        var Pattern = inputs[patternIndex]; //console.dir(patternIndex);console.dir(Pattern);
         /*  console.group('patternIndex: %c'+patternIndex,'font-weight:bold');
             console.dir(inputs[patternIndex]);
             //  counter for patterns element that matches for the current column
         */
         var patternStringElementsNumber, matrixRowNumber=this.corrections.x;
-        for(var row in Pattern){
+        for(var row in Pattern){ //console.log('row = '+row);
             matrixRowNumber++;
             /*  console.dir(this.headers); // A	B C	D E	F G	H I J
                 console.dir(Pattern[row]);  */
@@ -65,13 +67,22 @@ var Matrix={
                         $('#'+this.headers[k]+matrixRowNumber).addClass('active');
                         patternStringElementsNumber++;
                     }
-                }
-                //console.groupEnd();
+                } //console.groupEnd();
             }
-        }
-        //console.groupEnd();
+        } //console.groupEnd();
 	},
-	getMatrixlines:function(){
+	// get reception area:
+    getReceptionArea:function(){
 		this.lines=$('tr',this.obj).slice(1);
-	}
+	},
+    intervalId:null,
+    switcher:{
+        button_id:      'action',         
+        btn_text:       'Stop it!',
+        changeBtnVal:   function(){
+            var btnVal = $('#'+Matrix.switcher.button_id).text();             
+            $('#'+Matrix.switcher.button_id).text(Matrix.switcher.btn_text);
+            Matrix.switcher.btn_text = btnVal;
+        }
+    }
 };

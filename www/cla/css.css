@@ -1,10 +1,26 @@
 @charset "utf-8";
 /* CSS Document */
+html,body{
+    height: 100%;
+    margin: 0;
+    overflow: hidden;
+}
+*{
+    box-sizing: border-box;
+}
+body{
+    padding: 10px 20px;
+}
+h1, h2, h3, h4, h5, h6{
+    font-family: Arial, Helvetica, sans-serif;
+}
 table{
 	border:solid 1px #999;
 	border-spacing:0;
 	border-collapse:collapse;
-	}
+	box-shadow: 3px 2px 6px #E4E4E4;
+	margin-bottom: 10px;
+}
 tbody tr:first-child,
 tr td:first-child{
 	background-color:#eaebec;
@@ -18,5 +34,44 @@ td{
 }
 .active{
     background-color: #666;
+}
+.custom input[type="text"]{
+    margin-right: 10px;
+    width: 40px;
+}
+.fullHeight{
+    height: 100% !important;
+}
+.fullWidth{
+    width: 100%;
+}
+.table{
+    display: table;
+}
+.tableRow{
+    display: table-row !important;
+}
+#action{
+    padding: 3px 16px;
+}
+#fields .custom{
+    line-height: 28px;
+}
+#log{
+    border:solid 2px #CCC;
+    margin-top: 10px;
+    overflow: auto;
+    padding:10px;
+}
+#log >div{
+    clear: both;
+}
+#log >div:after{
+    content: " ";
+    clear: both;
+    display: block;
+}
+#tHeader{
+    margin: 10px auto;
 }
 
