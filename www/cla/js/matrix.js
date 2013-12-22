@@ -2,51 +2,71 @@ var Matrix={
 	Id:'Matrix',
 	obj:null,
 	headers:[],
+    corrections:{
+        x:3,
+        y:1
+    },
 	lines:null,
-	makeMatrixMap:function(row,first_tr){
-		//console.groupCollapsed('%cset Matrix map:','font-weight:bold');
+	makeMatrixMap:function(headers){
+        //console.groupCollapsed('%cset Matrix map:','font-weight:bold');
+        var row;
+        if(headers){
+            row=$('tr:first-child',this.obj);
+        }else{
+            this.getMatrixlines();
+            row=this.lines; 
+        }   //console.log('row: ');console.dir(row);
+        var Mtrx = this;
         $(row).each(function(indexTr, tr) {
-			$('td',tr).each(function(indexTd,td){
+            //
+            $('td',tr).each(function(indexTd,td){
 				// skip the first column
 				if(indexTd){
-					if(first_tr) // only single iteration
-						Matrix.headers[indexTd-1]=$(td).text();
-					else{
-						td.id=Matrix.headers[indexTd-1]+[indexTr+1];
-						//console.log('td.id = '+td.id);
+					if(headers){ // only single iteration
+						Mtrx.headers[indexTd-1]=$(td).text();
+                        /*console.log('['+indexTd+'-1] = '+(indexTd-1)+', $(td).text(): '+$(td).text());
+                        console.log('current header: %c'+Mtrx.headers[indexTd-1], 'color: orange');*/
+                    }else{
+						td.id=Mtrx.headers[indexTd-1]+(indexTr+1);
+                        /*console.log('%cthis.headers['+(indexTd-1)+'] = '+Mtrx.headers[indexTd-1], 'color:green');
+						console.log('%cthis.headers['+indexTd+'-1]+('+indexTr+'+1)', 'color:violet');
+                        console.log('this.headers['+(indexTd-1)+']+('+(indexTr+1)+') = '+Mtrx.headers[indexTd-1]+(indexTr+1));
+                        console.log('td.id = '+td.id);*/
 					}
 				} 
             });
 		});
 		//console.groupEnd();
 	},
-	feedInputs:function(patternIndex){
+	//
+    feedInputs:function(patternIndex){
         $('td',this.lines).removeClass('active');
         var Pattern = inputs[patternIndex];
-        //console.groupCollapsed('%cPattern:','font-weight:bold');
-            //console.dir(Pattern);
-        /*  counter for patterns element that matches for the
-            current column
+        /*  console.group('patternIndex: %c'+patternIndex,'font-weight:bold');
+            console.dir(inputs[patternIndex]);
+            //  counter for patterns element that matches for the current column
         */
-        var p, rw=0;
+        var patternStringElementsNumber, matrixRowNumber=this.corrections.x;
         for(var row in Pattern){
-            rw++;
-            //console.dir(this.headers); // A	B C	D E	F G	H I J
-            //console.dir(Pattern[row]);
+            matrixRowNumber++;
+            /*  console.dir(this.headers); // A	B C	D E	F G	H I J
+                console.dir(Pattern[row]);  */
             /*  3 : ['C','D','E','F']
                 4 :	['B','C','D','E','F']
              */
-            p=0;
+            patternStringElementsNumber=0;
             for (var i = 0, j=Pattern[row].length; i <= j; i++) {
+                //console.groupCollapsed('i = '+i+', %cPattern[row].length = '+Pattern[row].length,'font-weight:bold');
                 //
                 for(var k=0, g = this.headers.length; k<g; k++){
-                    //console.log(this.headers[k]+' : '+Pattern[row][p]);
-                    if(this.headers[k]==Pattern[row][p]){
-                        //console.log('cell.id: '+this.headers[k]+rw);
-                        $('#'+this.headers[k]+rw).addClass('active');
-                        p++;
+                    //console.log('k='+k+', g= '+g+' this.headers[k] : Pattern[row][patternStringElementsNumber] = '+this.headers[k]+' : '+Pattern[row][patternStringElementsNumber]);
+                    if(this.headers[k]==Pattern[row][patternStringElementsNumber]){
+                        //console.log('cell.id: '+this.headers[k]+matrixRowNumber);
+                        $('#'+this.headers[k]+matrixRowNumber).addClass('active');
+                        patternStringElementsNumber++;
                     }
                 }
+                //console.groupEnd();
             }
         }
         //console.groupEnd();
@@ -55,201 +75,3 @@ var Matrix={
 		this.lines=$('tr',this.obj).slice(1);
 	}
 };
-var inputs={
-	1:{
-		1:                  ["E","F"],
-		2:              ["D","E","F"],
-		3:          ["C","D","E","F"],
-		4:      ["B","C","D","E","F"],
-		5:      			["E","F"],
-		6:      			["E","F"],
-		7:      			["E","F"],
-		8:      			["E","F"],
-		9:          		["E","F"],
-		10:     			["E","F"],
-		11:             	["E","F"],
-		12: 				["E","F"],
-		13:     ["B","C","D","E","F","G","H","I"],
-		14:     ["B","C","D","E","F","G","H","I"]
-	},
-	2:{
-		1:			["C","D","E","F","G","H"],
-		2:		["B","C","D","E","F","G","H","I"],
-		3:	["A","B","C",                "H","I","J"],
-		4:  ["A","B",                        "I","J"],
-		5:                                  ["I","J"],
-		6:                              ["H","I","J"],
-		7:                          ["G","H","I"],
-		8:                      ["F","G","H"],
-		9:                  ["E","F","G"],
-		10:				["D","E","F"],
-		11:			["C","D","E"],
-		12:		["B","C","D"],
-		13:	["A","B","C","D","E","F","G","H","I"],
-		14:	["A","B","C","D","E","F","G","H","I"]
-    },
-	3:{
-		1:			["C","D","E","F","G","H"],
-		2:		["B","C","D","E","F","G","H","I"],
-		3:	["A","B","C",                "H","I","J"],
-		4:  ["A","B",                        "I","J"],
-		5:                                  ["I","J"],
-		6:                              ["H","I","J"],
-		7:                  ["E","F","G","H","I"],
-		8:                  ["E","F","G","H","I"],
-		9:                              ["H","I","J"],
-		10:                                 ["I","J"],
-		11: ["A","B",                        "I","J"],
-		12: ["A","B","C",                "H","I","J"],
-		13:     ["B","C","D","E","F","G","H","I"],
-		14:         ["C","D","E","F","G","H"]
-    },
-	4:{
-		1:                          ["G","H"],
-		2:                      ["F","G","H"],
-		3:                  ["E","F","G","H"],
-		4:              ["D","E","F","G","H"],
-		5:          ["C","D","E",    "G","H"],
-		6:      ["B","C","D",        "G","H"],
-		7:  ["A","B","C",            "G","H"],
-		8:  ["A","B",                "G","H"],
-		9:  ["A","B","C","D","E","F","G","H","I","J"],
-		10:	["A","B","C","D","E","F","G","H","I","J"],
-		11:                         ["G","H"],
-		12:                         ["G","H"],
-		13:                         ["G","H"],
-		14:                         ["G","H"]
-    },
-	5:{
-		1:  ["A","B","C","D","E","F","G","H","I","J"],
-		2:  ["A","B","C","D","E","F","G","H","I","J"],
-		3:  ["A","B"],
-		4:  ["A","B"],
-		5:  ["A","B"],
-		6:  ["A","B"],
-		7:  ["A","B","C","D","E","F","G","H"],
-		8:  ["A","B","C","D","E","F","G","H","I"],
-		9:                            ["H","I","J"],
-		10:                               ["I","J"],
-		11: ["A","B",                      "I","J"],
-		12: ["A","B","C",              "H","I","J"],
-		13:     ["B","C","D","E","F","G","H","I"],
-		14:         ["C","D","E","F","G","H"]
-    },
-	6:{
-		1:			["C","D","E","F","G","H"],
-		2:		["B","C","D","E","F","G","H","I"],
-		3:  ["A","B","C",                "H","I","J"],
-		4:  ["A","B",                        "I","J"],
-		5:  ["A","B"],
-		6:  ["A","B"],
-		7:  ["A","B","C","D","E","F","G","H"],
-		8:  ["A","B","C","D","E","F","G","H","I"],
-		9:  ["A","B",                    "H","I","J"],
-		10: ["A","B",                        "I","J"],
-		11: ["A","B",                        "I","J"],
-		12: ["A","B","C",                "H","I","J"],
-		13:     ["B","C","D","E","F","G","H","I"],
-		14:         ["C","D","E","F","G","H"]
-    },
-	7:{
-		1:  ["A","B","C","D","E","F","G","H","I","J"],
-		2:  ["A","B","C","D","E","F","G","H","I","J"],
-		3:                                  ["I","J"],
-		4:                              ["H","I"],
-		5:                          ["G","H"],
-		6:                      ["F","G"],
-		7:                  ["E","F"],
-		8:			    ["D","E"],
-		9:		    ["C","D"],
-		10:		    ["C","D"],
-		11:		    ["C","D"],
-		12:		    ["C","D"],
-		13:         ["C","D"],
-		14:         ["C","D"]
-    },
-	8:{
-		1:			["C","D","E","F","G","H"],
-		2:		["B","C","D","E","F","G","H","I"],
-		3:	["A","B","C",                "H","I","J"],
-		4:  ["A","B",                        "I","J"],
-		5:  ["A","B",                        "I","J"],
-		6:  ["A","B","C",                "H","I","J"],
-		7:      ["B","C","D","E","F","G","H","I"],
-		8:      ["B","C","D","E","F","G","H","I"],
-		9:  ["A","B","C",                "H","I","J"],
-		10: ["A","B",                        "I","J"],
-		11: ["A","B",                        "I","J"],
-		12: ["A","B","C",                "H","I","J"],
-		13:     ["B","C","D","E","F","G","H","I"],
-		14:         ["C","D","E","F","G","H"]
-    },
-	9:{
-		1:			["C","D","E","F","G","H"],
-		2:		["B","C","D","E","F","G","H","I"],
-		3:	["A","B","C",                "H","I","J"],
-		4:  ["A","B",                        "I","J"],
-		5:  ["A","B",                        "I","J"],
-		6:  ["A","B","C",                    "I","J"],
-		7:      ["B","C","D","E","F","G","H","I","J"],
-		8:          ["C","D","E","F","G","H","I","J"],
-		9:                                  ["I","J"],
-		10:                                 ["I","J"],
-		11: ["A","B",                        "I","J"],
-		12: ["A","B","C",                "H","I","J"],
-		13:     ["B","C","D","E","F","G","H","I"],
-		14:         ["C","D","E","F","G","H"]
-    },
-	10:{
-		1:			["C","D","E","F","G","H"],
-		2:		["B","C","D","E","F","G","H","I"],
-		3:	["A","B","C",                "H","I","J"],
-		4:  ["A","B",                        "I","J"],
-		5:  ["A","B",                        "I","J"],
-		6:  ["A","B",                        "I","J"],
-		7:  ["A","B",                        "I","J"],
-		8:  ["A","B",                        "I","J"],
-		9:  ["A","B",                        "I","J"],
-		10: ["A","B",                        "I","J"],
-		11: ["A","B",                        "I","J"],
-		12: ["A","B","C",                "H","I","J"],
-		13:     ["B","C","D","E","F","G","H","I"],
-		14:         ["C","D","E","F","G","H"]
-    }
-};
-
-$(function(){
-	Matrix.obj=$('#'+Matrix.Id);
-	// get table headers:
-	Matrix.makeMatrixMap($('tr:first-child',Matrix.obj),true);
-	// get lines
-	Matrix.getMatrixlines();
-	// set id id to the cells:
-	Matrix.makeMatrixMap(Matrix.lines);
-    //check The Matrix:
-    //console.dir(Matrix);
-    // feed inputs to the Matrix:
-    var int=0,iOrder = [1,2,3,4,5,6,7,8,9,10];
-    //for(var i = 1,j=iOrder.length;i<=j;i++)
-    var runMatrix = function(){
-        //console.log('runMatrix, int: '+int);
-        var runMatrixAnyway = function(){ 
-            //console.log('int start = '+int);           
-            Matrix.feedInputs(int+1);            
-            int++;
-            //console.log('int end = '+int);
-        };
-        if(!int){ //console.log('%cno int, runMatrixAnyway, int: '+int,'color:blue');
-            runMatrixAnyway();
-        }
-        var indervalId = setInterval(function(){
-            //console.log('%cSet interval','color:brown');
-            if(iOrder[int]){ //console.log('iOrder['+int+'] exists, runMatrixAnyway, int: '+int);
-                runMatrixAnyway();    
-            }else{
-                clearInterval(indervalId); //console.log('End of inputs is reached...');
-            }
-        },'1000');
-    };
-    runMatrix();
-});
