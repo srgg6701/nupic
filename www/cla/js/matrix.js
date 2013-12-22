@@ -9,15 +9,15 @@ var Matrix={
         x:3,    // vertical offset
         y:1,     // horizontal offset
 		randomOffset:function(set_offset){
-            var offset = 0;
-            //console.log('Matrix.erosion = '+Matrix.erosion);
+            var offset = 0; //console.log('Matrix.erosion = '+Matrix.erosion);
             if (Matrix.erosion||set_offset) {
                 offset = Math.round(Math.random() * (3 - 1) + 1);
-                if(Math.round(Math.random())==0&&set_offset)//
+                if( Math.round(Math.random())==0
+                    && set_offset) // otherwise while errosion it will tear input apart
                     offset=-offset;
-                console.log('Matrix.random_offset = ' + Matrix.random_offset
+                /*console.log('Matrix.random_offset = ' + Matrix.random_offset
                              + ', Matrix.erosion = ' + Matrix.erosion
-                             + ', offset = '+offset);
+                             + ', offset = '+offset);*/
             }
 			return offset;
 		}
@@ -68,12 +68,11 @@ var Matrix={
         if(Matrix.random_offset){
             console.log('%cMatrix.random_offset','color:red');
             hOffset=Matrix.corrections.randomOffset(true);
-            vOffset=Matrix.corrections.randomOffset(true);
-        }/*else if(Matrix.erosion){
-            console.log('%cMatrix.erosion','color:blue');
-            hOffset=true;
-            vOffset=true;
-        }*/
+            //vOffset=Matrix.corrections.randomOffset(true);
+            
+        }
+        if(Matrix.random_offset||Matrix.erosion)
+            matrixRowNumber+=Matrix.corrections.randomOffset(true);
         for(var row in Pattern){ //console.log('row = '+row);
             matrixRowNumber++;
             /*  console.dir(this.headers); // A	B C	D E	F G	H I J
@@ -92,7 +91,7 @@ var Matrix={
                         //console.log('cell.id: '+this.headers[k]+matrixRowNumber);
                         // if erosion has been set, get offsets value
                         if(Matrix.erosion){
-                            hOffset=Matrix.corrections.randomOffset();
+                            hOffset=Matrix.corrections.randomOffset()-2;
                             console.log('hOffset = '+hOffset);                            
                         }
                         $('#'+this.headers[k+hOffset]+matrixRowNumber).addClass('active');
