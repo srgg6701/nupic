@@ -40,7 +40,7 @@ function switchDistortionType(obj) {
         if(distortion_type=='random_offset'){
             distortion_type_alt='erosion';
         }
-    } //console.log('distortion_type = '+distortion_type+', distortion_type_alt = '+distortion_type_alt);
+    } console.log('distortion_type = '+distortion_type+', distortion_type_alt = '+distortion_type_alt);
     if(obj.checked){
         Matrix[distortion_type_alt]=false;
         $('#'+distortion_type_alt).attr('checked', false);

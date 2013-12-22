@@ -13,8 +13,11 @@ var Matrix={
             //console.log('Matrix.erosion = '+Matrix.erosion);
             if (Matrix.erosion||set_offset) {
                 offset = Math.round(Math.random() * (3 - 1) + 1);
-                if(Math.round(Math.random())==0) offset=-offset;
-                console.log('offset = '+offset);
+                if(Math.round(Math.random())==0&&set_offset)//
+                    offset=-offset;
+                console.log('Matrix.random_offset = ' + Matrix.random_offset
+                             + ', Matrix.erosion = ' + Matrix.erosion
+                             + ', offset = '+offset);
             }
 			return offset;
 		}
@@ -63,12 +66,14 @@ var Matrix={
         var patternStringElementsNumber, matrixRowNumber=this.corrections.x;
         var hOffset = 0, vOffset=0;
         if(Matrix.random_offset){
+            console.log('%cMatrix.random_offset','color:red');
             hOffset=Matrix.corrections.randomOffset(true);
             vOffset=Matrix.corrections.randomOffset(true);
-        }else{
+        }/*else if(Matrix.erosion){
+            console.log('%cMatrix.erosion','color:blue');
             hOffset=true;
             vOffset=true;
-        }
+        }*/
         for(var row in Pattern){ //console.log('row = '+row);
             matrixRowNumber++;
             /*  console.dir(this.headers); // A	B C	D E	F G	H I J
@@ -85,9 +90,10 @@ var Matrix={
                     //console.log('k='+k+', g= '+g+' this.headers[k] : Pattern[row][patternStringElementsNumber] = '+this.headers[k]+' : '+Pattern[row][patternStringElementsNumber]);
                     if(this.headers[k]==Pattern[row][patternStringElementsNumber]){
                         //console.log('cell.id: '+this.headers[k]+matrixRowNumber);
-                        if(hOffset){
-                            if(hOffset===true)
-                                hOffset=Matrix.corrections.randomOffset();
+                        // if erosion has been set, get offsets value
+                        if(Matrix.erosion){
+                            hOffset=Matrix.corrections.randomOffset();
+                            console.log('hOffset = '+hOffset);                            
                         }
                         $('#'+this.headers[k+hOffset]+matrixRowNumber).addClass('active');
                         patternStringElementsNumber++;
