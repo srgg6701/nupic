@@ -66,7 +66,6 @@ function runMatrix() { // Matrix's going to have you, Neo! :)
     var showCurrentInfo=function() {
         iterationNumber++;
         $('#iteration_number').html(iterationNumber);
-        $('#current_input_number').html(inputNumber);
         dt = new Date();
         hrs = dt.getHours();
             if(hrs<10) hrs='0'+hrs;

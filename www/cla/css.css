@@ -146,6 +146,19 @@ td{
 .minus{
 	background-color: lightgray;
 }
+#pattern_box{
+	bottom: 0;
+	left: 342px;
+	right: 0;
+	overflow: hidden;
+	position: absolute;
+	top: 0;
+}
+#pattern_box >div{
+	box-shadow: 14px 24px 70px -26px #A4B8E2;
+	margin-left: 20px;
+	padding: 30px 20px 20px 46px;
+}
 .plus{
 	background-color: lightskyblue;
 }
