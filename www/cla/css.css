@@ -3,7 +3,7 @@
 html,body{
     height: 100%;
     margin: 0;
-    overflow: hidden;
+    /*overflow: hidden;*/
 }
 *{
     box-sizing: border-box;
@@ -45,6 +45,15 @@ td{
 .fullWidth{
     width: 100%;
 }
+[type="range"]{
+    margin-left: 14px;
+    /* float: right !important; */
+    width: 150px;
+}
+.ranges_header{
+    float: left;
+    margin-top: -4px;
+}
 .table{
     display: table;
 }
@@ -53,25 +62,58 @@ td{
 }
 #action{
     border-radius: 10px;
+    color: #333;
+    clear: both;
+    display: block;
+    float: left;
+    font-size: 17px;
+    font-weight: bold;
     margin-left: -4px;
     margin-top: 8px;
-    padding: 12px 62px;
+    outline: none;
+    padding: 10px 47px 10px 40px;
+    text-shadow: 2px 3px 17px rgba(0, 0, 0, 0.3);
 }
-.start{
-    background-color: #FDC660;
-    box-shadow: 0 -20px 7px 0px #C4982A inset;
+.clearfix{    
+    clear: both;
+    display: block;
 }
-.stop{
-    background-color: darkgrey;
-    box-shadow: 0 -20px 7px 0px #DBD7CE inset
+.clearfix:after{
+    clear: both;
+    content:" ";
+    display: block;
+}
+#cols-sets{
+    border-bottom: solid 1px #ccc;
+    box-shadow: 0px -8px 14px 0px #EBEBEB inset;
+    padding-bottom: 5px;
+	/**/
+	-moz-user-select: none;
+   -khtml-user-select: none;
+   -webkit-user-select: none;
+   /*
+     Introduced in IE 10.
+     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+   */
+   -ms-user-select: none;
+   user-select: none;
+}
+#custom_column{
+    margin-left: 20px;
 }
 #fields .custom{
     font-size: 1.1em;
     line-height: 28px;
+    width: 100%;
+}
+#iteration_number{
+    margin-left: 10px;
+	
 }
 #log{
     border:solid 2px #CCC;
     margin-top: 10px;
+    min-height: 40px;
     overflow: auto;
     padding:10px;
 }
@@ -83,7 +125,70 @@ td{
     clear: both;
     display: block;
 }
-#tHeader{
-    margin: 10px auto;
+.m-right2{
+	margin-right:2px;
 }
-
+.minus, .plus {
+	display:inline-block;
+	border-radius: 10px;
+	box-shadow: 0 0 0px 1px rgba(0,0,0,0.35);
+	cursor: default;
+	height: 16px;
+	line-height: 16px;
+	margin-bottom: -3px;
+	margin-top: 4px;
+	padding-bottom: 16px;
+	padding-top: 2px;
+	position: relative;
+	text-align: center;
+	width: 17px;
+}
+.minus{
+	background-color: lightgray;
+}
+.plus{
+	background-color: lightskyblue;
+}
+.minus div, 
+.plus div{
+	position:absolute;
+	height:100%;
+	width:100%;
+}
+.minus div{
+	font-size: 1.3em;
+	text-shadow: 0 0 1px black;
+	margin-top: -3px;
+}
+.plus div{
+	border: none;
+	text-shadow: 0 0 1px #000;
+}
+#ranges-block{
+    margin-top: 8px;
+}
+.right{
+    float: right;
+}
+#scount{
+    margin-left: 13px;
+}
+#settings{
+    width: 100%
+}
+.start{
+    background-color: #FDC660;
+    box-shadow: 0 -20px 7px 0px #C4982A inset;
+}
+.stop{
+    background-color: darkgrey;
+    box-shadow: 0 -20px 7px 0px #DBD7CE inset
+}
+#tHeader{
+    float: right;
+    margin: 20px 10px 10px;
+    width: 142px;
+}
+.left{
+    float: left;
+}

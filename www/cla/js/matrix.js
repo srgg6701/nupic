@@ -102,7 +102,7 @@ var Matrix={
     intervalId:null,
     switcher:{
         button_id:      'action',         
-        btn_text:       'Stop it!',
+        btn_text:       '■ Stop it! ',
         changeBtnVal:   function(){
             var btnVal = $('#'+Matrix.switcher.button_id).text();             
             $('#'+Matrix.switcher.button_id)
