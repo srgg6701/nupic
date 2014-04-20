@@ -1,11 +1,4 @@
-//
-$(function(){
-    // Prepare Matrix:
-	Matrix.obj=$('#'+Matrix.Id);
-	// get table headers:
-	Matrix.makeMatrixMap('headers');
-	// set id id to the cells:
-	Matrix.makeMatrixMap();
+$( function(){
     //console.dir(Marix);
     $('#ffi-ordered').on('click', function(){
         //console.log('val = '+$('#limit').val());
@@ -24,7 +17,13 @@ $(function(){
     });
     // run or stop Matrix:
     $('#'+Matrix.switcher.button_id).on('click', function(){
+        console.log('Matrix is: '+Matrix.run);
         (!Matrix.run)? runMatrix():stopMatrix();
+    });
+    // run matrix once
+    $('#do_once').on('click', function(){
+        if(Matrix.run) stopMatrix();
+        runMatrix(true);
     });
 });
 
@@ -46,22 +45,20 @@ function switchDistortionType(obj) {
         $('#'+distortion_type_alt).attr('checked', false);
     }
 }
-
 /**
  * interval - ms duration
  * static - use static data from the beginning to the end, once
  * in order to using random data set logical false
  * limit - iteration limit. To make it internal, set logical false or nothing
  */
-function runMatrix() { // Matrix's going to have you, Neo! :)
+function runMatrix(once) { // Matrix's going to have you, Neo! :)
     var interval,static,limit;
     if(!(interval=$('#interval').val())) interval='1000';
     
     static=$('input[name="ffi-order"]:checked').val();
-    limit=$('#limit').val();
-    /*    console.log('interval = '+interval+', static('+typeof(static)+') = '+static+', limit = ' + limit); 
+    limit=(once)? 1:$('#limit').val(); /*    console.log('interval = '+interval+', static('+typeof(static)+') = '+static+', limit = ' + limit);
     */
-    var inputNumber, iterationNumber=0; 
+    var inputNumber, iterationNumber=0;
     var dt, hrs, mnts, secs;
     var showCurrentInfo=function() {
         iterationNumber++;

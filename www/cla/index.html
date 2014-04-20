@@ -1,15 +1,18 @@
 <!doctype html>
-<html>
+<html ng-app>
     <head>
         <title>CLA</title>
         <link rel="stylesheet" type="text/css" href="css.css">
         <script src="libs/jquery-1.8.1.js"></script>
-        <script src="js/datasets.js"></script>
         <script src="js/matrix.js"></script>
+        <script src="js/datasets.js"></script>
+        <script src="js/matrixInit.js"></script>
         <script src="js/actions.js"></script>
         <script src="js/common.js"></script>
+        <script src="controllers/mainController.js"></script>
+    	<script src="libs/angular/angular.min.js"></script>
     </head>
-    <body>
+    <body ng-controller="mainController">
     <main class="table fullHeight fullWidth">
         <div id="fields" class="tableRow left">
             <table id="Matrix">
@@ -417,18 +420,16 @@
                 <div id="cols-sets" class="custom clearfix">
                     <div class="left" id="ccount">
                         <img class="m-right2" src="images/columns.png" title="Columns count"/>Cols:
-                        <span id="column_count">
-                            <span class="minus"><div>-</div></span>
-                            <span>80</span>
-                            <span class="plus"><div>+</div></span>
-                        </span>
+                        <select id="column_count">
+                        </select>                   
                     </div>
                     <div class="left" id="scount">
-                        <img class="m-right2" src="images/cells_per_column.png" title="Cells per column"/>Cells <b>x</b> column:
+                        <img class="m-right2" src="images/cells_per_column.png" title="Cells per column"/>Cells <b>per</b> col:
                         <span id="cells_per_column">
-                            <span class="minus"><div>-</div></span>
-                            <span>10</span>
-                            <span class="plus"><div>+</div></span>
+                            <span class="minus" onClick="changeValue(this)">
+                        <div>-</div></span>
+                            <span id="numCells"></span>
+                            <span class="plus" onClick="changeValue(this)"><div>+</div></span>
                         </span>
                     </div>
                 </div>
@@ -465,6 +466,7 @@
                 </div>
             </div>
             <button id="action" class="start">► Start it! </button>
+            <a class="Arial" id="do_once" href="javascript:runMatrixOnce();">► Run once</a>
             <h3 id="tHeader"> <span class="right" id="iteration_number">0</span> <span class="right">Iteration #</span> </h3>
         </div>
 

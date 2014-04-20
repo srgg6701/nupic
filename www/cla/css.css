@@ -11,57 +11,12 @@ html,body{
 body{
     padding: 10px 20px;
 }
-h1, h2, h3, h4, h5, h6{
+h1, h2, h3, h4, h5, h6, .Arial {
     font-family: Arial, Helvetica, sans-serif;
-}
-table{
-	border:solid 1px #999;
-	border-spacing:0;
-	border-collapse:collapse;
-	box-shadow: 3px 2px 6px #E4E4E4;
-	margin-bottom: 10px;
-}
-tbody tr:first-child,
-tr td:first-child{
-	background-color:#eaebec;
-}
-td{
-	border:solid 1px #ccc;
-	height: 18px;
-	line-height: 18px;
-	text-align:center;
-	width: 20px;
-}
-.active{
-    background-color: #666;
-}
-.custom input[type="text"]{
-    margin-right: 10px;
-    width: 40px;
-}
-.fullHeight{
-    height: 100% !important;
-}
-.fullWidth{
-    width: 100%;
-}
-[type="range"]{
-    margin-left: 14px;
-    /* float: right !important; */
-    width: 150px;
-}
-.ranges_header{
-    float: left;
-    margin-top: -4px;
-}
-.table{
-    display: table;
-}
-.tableRow{
-    display: table-row !important;
 }
 #action{
     border-radius: 10px;
+    box-sizing: border-box;
     color: #333;
     clear: both;
     display: block;
@@ -70,11 +25,34 @@ td{
     font-weight: bold;
     margin-left: -4px;
     margin-top: 8px;
+    min-width: 118px;
     outline: none;
-    padding: 10px 47px 10px 40px;
+    padding: 10px 20px 10px 12px;
     text-shadow: 2px 3px 17px rgba(0, 0, 0, 0.3);
 }
-.clearfix{    
+.active{
+    background-color: #666;
+}
+.column{
+    display: inline-block;
+    position: absolute;
+    text-align: center;
+}
+.column>div{
+    border: solid 1px rgb(224, 224, 101);
+    border-radius: 10px;
+    margin: auto;
+    opacity: 0.45;
+}
+.column>div:hover{
+    background-color: rgb(224, 224, 101);
+    opacity: 1;
+}
+.custom input[type="text"]{
+    margin-right: 10px;
+    width: 40px;
+}
+.clearfix{
     clear: both;
     display: block;
 }
@@ -87,19 +65,25 @@ td{
     border-bottom: solid 1px #ccc;
     box-shadow: 0px -8px 14px 0px #EBEBEB inset;
     padding-bottom: 5px;
-	/**/
-	-moz-user-select: none;
-   -khtml-user-select: none;
-   -webkit-user-select: none;
-   /*
-     Introduced in IE 10.
-     See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
-   */
-   -ms-user-select: none;
-   user-select: none;
+    /**/
+    -moz-user-select: none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    /*
+      Introduced in IE 10.
+      See http://ie.microsoft.com/testdrive/HTML5/msUserSelect/
+    */
+    -ms-user-select: none;
+    user-select: none;
 }
 #custom_column{
     margin-left: 20px;
+}
+#do_once{
+    float: left;
+    display: inline-block;
+    margin-top: 20px;
+    margin-left: 18px;
 }
 #fields .custom{
     font-size: 1.1em;
@@ -108,7 +92,16 @@ td{
 }
 #iteration_number{
     margin-left: 10px;
-	
+
+}
+.fullHeight{
+    height: 100% !important;
+}
+.fullWidth{
+    width: 100%;
+}
+.left{
+    float: left;
 }
 #log{
     border:solid 2px #CCC;
@@ -126,56 +119,56 @@ td{
     display: block;
 }
 .m-right2{
-	margin-right:2px;
+    margin-right:2px;
 }
 .minus, .plus {
-	display:inline-block;
-	border-radius: 10px;
-	box-shadow: 0 0 0px 1px rgba(0,0,0,0.35);
-	cursor: default;
-	height: 16px;
-	line-height: 16px;
-	margin-bottom: -3px;
-	margin-top: 4px;
-	padding-bottom: 16px;
-	padding-top: 2px;
-	position: relative;
-	text-align: center;
-	width: 17px;
+    display:inline-block;
+    border-radius: 10px;
+    box-shadow: 0 0 0px 1px rgba(0,0,0,0.35);
+    cursor: default;
+    height: 16px;
+    line-height: 16px;
+    margin-bottom: -3px;
+    margin-top: 4px;
+    padding-bottom: 16px;
+    padding-top: 2px;
+    position: relative;
+    text-align: center;
+    width: 17px;
 }
 .minus{
-	background-color: lightgray;
-}
-#pattern_box{
-	bottom: 0;
-	left: 342px;
-	right: 0;
-	overflow: hidden;
-	position: absolute;
-	top: 0;
-}
-#pattern_box >div{
-	box-shadow: 14px 24px 70px -26px #A4B8E2;
-	margin-left: 20px;
-	padding: 30px 20px 20px 46px;
-}
-.plus{
-	background-color: lightskyblue;
-}
-.minus div, 
-.plus div{
-	position:absolute;
-	height:100%;
-	width:100%;
+    background-color: lightgray;
 }
 .minus div{
-	font-size: 1.3em;
-	text-shadow: 0 0 1px black;
-	margin-top: -3px;
+    font-size: 1.3em;
+    text-shadow: 0 0 1px black;
+    margin-top: -3px;
+}
+#pattern_box{
+    bottom: 0;
+    left: 368px;
+    right: 0;
+    overflow: hidden;
+    position: absolute;
+    top: 0;
+}
+#pattern_box >div{
+    box-shadow: 14px 24px 70px -26px #A4B8E2;
+    margin-left: 20px;
+    padding: 30px 20px 20px 46px;
+}
+.plus{
+    background-color: lightskyblue;
+}
+.minus div,
+.plus div{
+    position:absolute;
+    height:100%;
+    width:100%;
 }
 .plus div{
-	border: none;
-	text-shadow: 0 0 1px #000;
+    border: none;
+    text-shadow: 0 0 1px #000;
 }
 #ranges-block{
     margin-top: 8px;
@@ -197,11 +190,41 @@ td{
     background-color: darkgrey;
     box-shadow: 0 -20px 7px 0px #DBD7CE inset
 }
+table{
+    border:solid 1px #999;
+    border-spacing:0;
+    border-collapse:collapse;
+    box-shadow: 3px 2px 6px #E4E4E4;
+    margin-bottom: 10px;
+    min-width: 348px;
+}
+tbody tr:first-child,
+tr td:first-child{
+    background-color:#eaebec;
+}
+td{
+    border: dotted 1px #ccc;
+    height: 18px;
+    line-height: 18px;
+    text-align:center;
+    width: 20px;
+}
 #tHeader{
     float: right;
-    margin: 20px 10px 10px;
     width: 142px;
 }
-.left{
+[type="range"]{
+    margin-left: 14px;
+    /* float: right !important; */
+    width: 150px;
+}
+.ranges_header{
     float: left;
+    margin-top: -4px;
+}
+.table{
+    display: table;
+}
+.tableRow{
+    display: table-row !important;
 }

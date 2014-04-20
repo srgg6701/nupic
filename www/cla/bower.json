@@ -1,0 +1,13 @@
+{
+  "name": "cla",
+  "version": "0.0.0",
+  "homepage": "https://github.com/srgg6701/nupic",
+  "authors": [
+    "srgg6701 <srgg67@gmail.com>"
+  ],
+  "description": "JavaScript implementation of CLA",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "~1.2.16"
+  }
+}
