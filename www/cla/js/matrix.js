@@ -3,28 +3,28 @@ var Matrix = {
     headers: [],
     random_offset: false,
     erosion: false,
-    init:{
-        cols:null, // In reality it will be re-calculated immediately after the page is being loaded
-        cells:10
+    init: {
+        cols: null, // In reality it will be re-calculated immediately after the page is being loaded
+        cells: 10
     },
-    limit:{
-        cells:{
-            min:1,
-            max:20        
+    limit: {
+        cells: {
+            min: 1,
+            max: 20
         },
-        ratio:0.05 // 16 columns
+        ratio: 0.05 // 16 columns
     },
     // array of columns by width and height
-    columnsSets:[],
+    columnsSets: [],
     corrections: {
         x: 3, // vertical offset
         y: 1, // horizontal offset
-        randomOffset: function(set_offset) {
+        randomOffset: function (set_offset) {
             var offset = 0; //console.log('Matrix.erosion = '+Matrix.erosion);
             if (Matrix.erosion || set_offset) {
                 offset = Math.round(Math.random() * (3 - 1) + 1);
                 if (Math.round(Math.random()) == 0
-                        && set_offset) // otherwise while errosion it will tear input apart
+                    && set_offset) // otherwise while errosion it will tear input apart
                     offset = -offset;
                 /*console.log('Matrix.random_offset = ' + Matrix.random_offset
                  + ', Matrix.erosion = ' + Matrix.erosion
@@ -35,26 +35,26 @@ var Matrix = {
     },
     lines: null,
     intervalId: null,
-    regionSpace:{
-        left:null,
-        top:null,
-        height:null,
-        width:null
+    regionSpace: {
+        left: null,
+        top: null,
+        height: null,
+        width: null
     },
     // stored data
-    settings:{
-        columns:null,
-        distortion:null,
-        cells:[null,8],
-        input_mode:[null,'random'],
-        interval:[false,1000],
-        iterations_limit:[false,0],
-        ingibition_radius:[null,2]
+    settings: {
+        columns: null,
+        distortion: null,
+        cells: [null, 8],
+        input_mode: [null, 'random'],
+        interval: [false, 1000],
+        iterations_limit: [false, 0],
+        ingibition_radius: [null, 2]
     },
     switcher: {
         button_id: 'action',
         btn_text: '■ Stop it! ',
-        changeBtnVal: function() {
+        changeBtnVal: function () {
             var btnVal = $('#' + Matrix.switcher.button_id).text();
             $('#' + Matrix.switcher.button_id)
                 .text(Matrix.switcher.btn_text).toggleClass('start stop');
@@ -64,25 +64,25 @@ var Matrix = {
     /**
      *  called onLoad
      */
-    handleSettings:function(data_to_store){
-        if(data_to_store){
-            window.localStorage.setItem('settings',JSON.stringify(data_to_store));
-        }else{
-            var dStorage=null,
-                dSettings=null;
-            if(dStorage=JSON.parse(window.localStorage.getItem('settings'))){
-                if(dSettings=dStorage.settings){
+    handleSettings: function (data_to_store) {
+        if (data_to_store) {
+            window.localStorage.setItem('settings', JSON.stringify(data_to_store));
+        } else {
+            var dStorage = null,
+                dSettings = null;
+            if (dStorage = JSON.parse(window.localStorage.getItem('settings'))) {
+                if (dSettings = dStorage.settings) {
                     console.dir(dSettings);
-                    for(var field in this.settings){
-                        console.log('field = '+field);
+                    for (var field in this.settings) {
+                        console.log('field = ' + field);
                         //
-                        if(dSettings[field]){
-                            console.log('name = '+field);
+                        if (dSettings[field]) {
+                            console.log('name = ' + field);
                             console.dir(dSettings[field]);
-                            if(typeof this.settings[field] == 'object' && this.settings[field]!==null){
+                            if (typeof this.settings[field] == 'object' && this.settings[field] !== null) {
                                 this.settings[field][0] = dSettings[field];
                                 console.dir(this.settings[field]);
-                            }else{
+                            } else {
                                 this.settings[field] = dSettings[field];
                                 console.log(this.settings[field]);
                             }
@@ -95,7 +95,7 @@ var Matrix = {
     /**
      * returns select element
      */
-    getColsSelect: function(){
+    getColsSelect: function () {
         return document.getElementById('column_count');
     },
     /**
@@ -103,7 +103,7 @@ var Matrix = {
      * set ids to the reception area elements (td in table):
      * it is being called twice (arg, no arg)
      */
-    makeMatrixMap: function(headers) {
+    makeMatrixMap: function (headers) {
         // Prepare Matrix:
         var MatrixTbl = $('#Matrix');
         //console.groupCollapsed('%cset MatrixTbl map:','font-weight:bold');
@@ -115,16 +115,16 @@ var Matrix = {
             //this.getReceptionArea();
             row = this.lines = $('tr', MatrixTbl).slice(1);
             // set columns onto perception field
-            var mTdFirst    = $('td:first',MatrixTbl),
-                borderW     = parseInt($(mTdFirst).css('border-width'));
-            this.regionSpace.left  = mTdFirst.offset().left+mTdFirst.outerWidth()+borderW;
-            this.regionSpace.top    =  mTdFirst.offset().top+mTdFirst.outerHeight()+borderW;
-            this.regionSpace.height = MatrixTbl.height()-mTdFirst.outerHeight()-borderW;
-            this.regionSpace.width  = MatrixTbl.width()-mTdFirst.outerWidth()-borderW;
+            var mTdFirst = $('td:first', MatrixTbl),
+                borderW = parseInt($(mTdFirst).css('border-width'));
+            this.regionSpace.left = mTdFirst.offset().left + mTdFirst.outerWidth() + borderW;
+            this.regionSpace.top = mTdFirst.offset().top + mTdFirst.outerHeight() + borderW;
+            this.regionSpace.height = MatrixTbl.height() - mTdFirst.outerHeight() - borderW;
+            this.regionSpace.width = MatrixTbl.width() - mTdFirst.outerWidth() - borderW;
         }   //console.log('row: ');console.dir(row);
-        $(row).each(function(indexTr, tr) {
+        $(row).each(function (indexTr, tr) {
             //
-            $('td', tr).each(function(indexTd, td) {
+            $('td', tr).each(function (indexTd, td) {
                 // skip the first column
                 if (indexTd) {
                     if (headers) { // only single iteration
@@ -146,12 +146,12 @@ var Matrix = {
     /**
      * get feed-forward input (FFI):
      */
-    feedInputs: function(patternIndex) {
+    feedInputs: function (patternIndex) {
         $('td', this.lines).removeClass('active');
         var Pattern = inputs[patternIndex]; //console.dir(patternIndex);console.dir(Pattern);
         //console.group('patternIndex: %c'+patternIndex,'font-weight:bold');
         //console.dir(inputs[patternIndex]);
-         //  counter for patterns element that matches for the current column
+        //  counter for patterns element that matches for the current column
         var patternStringElementsNumber, matrixRowNumber = this.corrections.x;
         var hOffset = 0;
         if (Matrix.random_offset) {
@@ -186,97 +186,98 @@ var Matrix = {
      * called onLoad
      * all possibles numbers of columns
      */
-    setMatrixColumnsRange:function(){
-        var cols = $('td',this.lines[0]).size()-1;
+    setMatrixColumnsRange: function () {
+        var cols = $('td', this.lines[0]).size() - 1;
         var rows = this.lines.length;
-        var cellsNum = cols*rows; console.log('cellsNum = '+cellsNum);
+        var cellsNum = cols * rows;
+        console.log('cellsNum = ' + cellsNum);
 
         // set init columns number
         var initColsNum;
         // if there is no settings stored in db, add them there
-        if(!this.settings.columns)
-            // store data in local storage
-            this.handleSettings({settings:{columns:(cellsNum/2).toFixed()}});
+        if (!this.settings.columns)
+        // store data in local storage
+            this.handleSettings({settings: {columns: (cellsNum / 2).toFixed()}});
         // keep it, it will be checked  bellow
         initColsNum = this.settings.columns;
         var h, w, dvd, cff, curValueOfCell, curCellEnc; //calculate columns by sides
         var colSelect = this.getColsSelect(), cOption;
-        var cRatio = cellsNum*this.limit.ratio;
-        for(var i=1;i<cellsNum-1;i++){
-            curValueOfCell = (i>1)? cellsNum-i:cellsNum;
-            cff = Math.sqrt(cellsNum/curValueOfCell);
-            curCellEnc = curValueOfCell*cff;
+        var cRatio = cellsNum * this.limit.ratio;
+        for (var i = 1; i < cellsNum - 1; i++) {
+            curValueOfCell = (i > 1) ? cellsNum - i : cellsNum;
+            cff = Math.sqrt(cellsNum / curValueOfCell);
+            curCellEnc = curValueOfCell * cff;
             // round height value
-            h = (curCellEnc/cols).toFixed();
-            w = (curCellEnc/rows);
-            dvd = curValueOfCell/h;
-            if((dvd ^ 0) === dvd){
+            h = (curCellEnc / cols).toFixed();
+            w = (curCellEnc / rows);
+            dvd = curValueOfCell / h;
+            if ((dvd ^ 0) === dvd) {
                 w = w.toFixed();
-                cOption='<option value="'+curValueOfCell+'"';
+                cOption = '<option value="' + curValueOfCell + '"';
                 // set init cols number
-                if(initColsNum && curValueOfCell<=initColsNum){
-                    cOption+=' selected="selected"';
-                    initColsNum=null;
+                if (initColsNum && curValueOfCell <= initColsNum) {
+                    cOption += ' selected="selected"';
+                    initColsNum = null;
                     this.init.cols = curValueOfCell;
                 }
-                cOption+='>'+curValueOfCell+'</option>';
+                cOption += '>' + curValueOfCell + '</option>';
                 //console.log((h*w)+' = '+h+' x '+w);
                 $(colSelect).append(cOption);
-                this.columnsSets[curValueOfCell]=[h,w];
+                this.columnsSets[curValueOfCell] = [h, w];
                 //console.dir(this.columnsSets[curValueOfCell]);
             }
             // avoid too small amount of columns
-            if(curValueOfCell<=cRatio) break;
+            if (curValueOfCell <= cRatio) break;
         }
     }
 };
 /**
  * it here because it is being called from the index page as well
  */
-function setColumns(select){ // if redefine set
+function setColumns(select) { // if redefine set
 
     var mGrid = 'mGrid';
-    var getSelVal = function(){
-        return parseInt($('option:selected',select).val());
+    var getSelVal = function () {
+        return parseInt($('option:selected', select).val());
     };
-    if(select) { // got selected columns' number onChange
-        $('#'+mGrid).remove();
+    if (select) { // got selected columns' number onChange
+        $('#' + mGrid).remove();
         // store data in local storage
-        var sets=JSON.parse(window.localStorage.getItem('settings'));
+        var sets = JSON.parse(window.localStorage.getItem('settings'));
         sets.settings.columns = getSelVal();
-        window.localStorage.setItem('settings',JSON.stringify(sets));
+        window.localStorage.setItem('settings', JSON.stringify(sets));
     }
     else select = Matrix.getColsSelect(); //console.dir(select);
     //
     var activeSet = Matrix.columnsSets[getSelVal()];
-    var cHeight = Matrix.regionSpace.height/activeSet[0];
-    var cWidth  = Matrix.regionSpace.width/activeSet[1];
+    var cHeight = Matrix.regionSpace.height / activeSet[0];
+    var cWidth = Matrix.regionSpace.width / activeSet[1];
     //console.log('rows: '+activeSet[0]+'('+cHeight+'), cols: '+activeSet[1]+'('+cWidth+')');
-    var cover = $('<div/>',{
-        id:mGrid
+    var cover = $('<div/>', {
+        id: mGrid
     }).css({
             //background:'yellow',
             //opacity:    0.65,
-            position:   'absolute',
-            top:        Matrix.regionSpace.top+'px',
-            left:       Matrix.regionSpace.left+'px',
-            width:      Matrix.regionSpace.width+'px',
-            height:     Matrix.regionSpace.height+'px'
+            position: 'absolute',
+            top: Matrix.regionSpace.top + 'px',
+            left: Matrix.regionSpace.left + 'px',
+            width: Matrix.regionSpace.width + 'px',
+            height: Matrix.regionSpace.height + 'px'
         });
     $('body').prepend(cover);
-    var colDm = $('td',Matrix.lines[0]).eq(1).width();
-    var vMargin = (cHeight-colDm)/2;
+    var colDm = $('td', Matrix.lines[0]).eq(1).width();
+    var vMargin = (cHeight - colDm) / 2;
     var curStyle,
         fullStyle,
-        cStyle = 'height:'+cHeight+'px; '+
-            'width:'+cWidth+'px; '+
-            'line-height:'+cHeight+'px; ',
-        innerStyle='margin-top:'+vMargin+'px; margin-bottom:'+vMargin+'px';
-    for(var i=0; i<activeSet[0];i++){
-        curStyle = cStyle+'top:'+cHeight*i+'px;';
-        for(var j=0; j<activeSet[1];j++){
-            fullStyle = curStyle+'left:'+cWidth*j+'px;';
-            $(cover).append('<div style="'+fullStyle+'" class="column"><div style="height:'+colDm+'px; width:'+colDm+'px;'+innerStyle+'"></div></div>');
+        cStyle = 'height:' + cHeight + 'px; ' +
+            'width:' + cWidth + 'px; ' +
+            'line-height:' + cHeight + 'px; ',
+        innerStyle = 'margin-top:' + vMargin + 'px; margin-bottom:' + vMargin + 'px';
+    for (var i = 0; i < activeSet[0]; i++) {
+        curStyle = cStyle + 'top:' + cHeight * i + 'px;';
+        for (var j = 0; j < activeSet[1]; j++) {
+            fullStyle = curStyle + 'left:' + cWidth * j + 'px;';
+            $(cover).append('<div style="' + fullStyle + '" class="column"><div style="height:' + colDm + 'px; width:' + colDm + 'px;' + innerStyle + '"></div></div>');
         }
     }
 }
