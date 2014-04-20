@@ -163,16 +163,9 @@ var Matrix = {
         // set init columns number
         var initColsNum;
         // if there is no settings stored in db, add them there
-        if(!this.settings.columns){ console.log('no settings.columns');
-            initColsNum=(cellsNum/2).toFixed();
-            var tSet = {
-                settings:{
-                    columns:initColsNum
-                }
-            };
+        if(!this.settings.columns)
             // store data in local storage
-            this.handleSettings(tSet);
-        }
+            this.handleSettings({settings:{columns:(cellsNum/2).toFixed()}});
         // keep it, it will be checked  bellow
         initColsNum = this.settings.columns;
         var h, w, dvd, cff, curValueOfCell, curCellEnc; //calculate columns by sides
@@ -207,7 +200,7 @@ var Matrix = {
     }
 };
 /**
- *
+ * it here because it is being called from the index page as well
  */
 function setColumns(select){ // if redefine set
 
