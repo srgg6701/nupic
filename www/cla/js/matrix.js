@@ -44,12 +44,12 @@ var Matrix = {
     // stored data
     settings:{
         columns:null,
-        cells:null,
-        input_mode:null,
         distortion:null,
-        interval:false,
-        iterations_limit:false,
-        ingibition_radius:null
+        cells:[null,8],
+        input_mode:[null,'random'],
+        interval:[false,1000],
+        iterations_limit:[false,0],
+        ingibition_radius:[null,2]
     },
     switcher: {
         button_id: 'action',
@@ -68,9 +68,27 @@ var Matrix = {
         if(data_to_store){
             window.localStorage.setItem('settings',JSON.stringify(data_to_store));
         }else{
-            var mSettings=null;
-            if(mSettings=JSON.parse(window.localStorage.getItem('settings'))){
-                this.settings.columns = mSettings.settings.columns;
+            var dStorage=null,
+                dSettings=null;
+            if(dStorage=JSON.parse(window.localStorage.getItem('settings'))){
+                if(dSettings=dStorage.settings){
+                    console.dir(dSettings);
+                    for(var field in this.settings){
+                        console.log('field = '+field);
+                        //
+                        if(dSettings[field]){
+                            console.log('name = '+field);
+                            console.dir(dSettings[field]);
+                            if(typeof this.settings[field] == 'object' && this.settings[field]!==null){
+                                this.settings[field][0] = dSettings[field];
+                                console.dir(this.settings[field]);
+                            }else{
+                                this.settings[field] = dSettings[field];
+                                console.log(this.settings[field]);
+                            }
+                        }
+                    }
+                }
             }
         }
     },
