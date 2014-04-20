@@ -41,6 +41,7 @@ var Matrix = {
         height:null,
         width:null
     },
+    // stored data
     settings:{
         columns:null,
         cells:null,
@@ -60,23 +61,30 @@ var Matrix = {
             Matrix.switcher.btn_text = btnVal;
         }
     },
+    /**
+     *  called onLoad
+     */
     handleSettings:function(data_to_store){
-        if(data_to_store)
+        if(data_to_store){
             window.localStorage.setItem('settings',JSON.stringify(data_to_store));
-        else{
+        }else{
             var mSettings=null;
             if(mSettings=JSON.parse(window.localStorage.getItem('settings'))){
-                console.dir(mSettings);
                 this.settings.columns = mSettings.settings.columns;
-                console.log('this.settings.columns = '+this.settings.columns);
             }
         }
     },
+    /**
+     * returns select element
+     */
     getColsSelect: function(){
         return document.getElementById('column_count');
     },
-    // set ids to the reception area elements (td in table):
-    // it is being called twice (arg, no arg)
+    /**
+     * called onLoad, twice
+     * set ids to the reception area elements (td in table):
+     * it is being called twice (arg, no arg)
+     */
     makeMatrixMap: function(headers) {
         // Prepare Matrix:
         var MatrixTbl = $('#Matrix');
@@ -117,7 +125,9 @@ var Matrix = {
         }); //console.groupEnd();
         $('#numCells').text(this.init.cells);
     },
-    // get feed-forward input (FFI):
+    /**
+     * get feed-forward input (FFI):
+     */
     feedInputs: function(patternIndex) {
         $('td', this.lines).removeClass('active');
         var Pattern = inputs[patternIndex]; //console.dir(patternIndex);console.dir(Pattern);
@@ -154,7 +164,10 @@ var Matrix = {
             }
         } //console.groupEnd();
     },
-    // all possibles numbers of columns
+    /**
+     * called onLoad
+     * all possibles numbers of columns
+     */
     setMatrixColumnsRange:function(){
         var cols = $('td',this.lines[0]).size()-1;
         var rows = this.lines.length;
