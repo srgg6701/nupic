@@ -20,11 +20,6 @@ $( function(){
         console.log('Matrix is: '+Matrix.run);
         (!Matrix.run)? runMatrix():stopMatrix();
     });
-    // run matrix once
-    $('#do_once').on('click', function(){
-        if(Matrix.run) stopMatrix();
-        runMatrix(true);
-    });
 });
 
 /**
@@ -53,10 +48,16 @@ function switchDistortionType(obj) {
  */
 function runMatrix(once) { // Matrix's going to have you, Neo! :)
     var interval,static,limit;
-    if(!(interval=$('#interval').val())) interval='1000';
-    
+
     static=$('input[name="ffi-order"]:checked').val();
-    limit=(once)? 1:$('#limit').val(); /*    console.log('interval = '+interval+', static('+typeof(static)+') = '+static+', limit = ' + limit);
+    if (once) {
+        limit=1;
+        interval=0;
+    }else{
+        limit=$('#limit').val();
+        if(!(interval=$('#interval').val()))
+            interval='1000';
+    } /*    console.log('interval = '+interval+', static('+typeof(static)+') = '+static+', limit = ' + limit);
     */
     var inputNumber, iterationNumber=0;
     var dt, hrs, mnts, secs;
@@ -128,6 +129,13 @@ function runMatrix(once) { // Matrix's going to have you, Neo! :)
     }
     Matrix.run=true;
     Matrix.switcher.changeBtnVal();
+}
+/**
+ *
+ */
+function runMatrixOnce(){
+    if(Matrix.run) stopMatrix();
+    runMatrix(true);
 }
 /**
  * Stop it, Neo!!! :)

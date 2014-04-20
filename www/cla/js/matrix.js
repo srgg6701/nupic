@@ -41,6 +41,15 @@ var Matrix = {
         height:null,
         width:null
     },
+    settings:{
+        columns:null,
+        cells:null,
+        input_mode:null,
+        distortion:null,
+        interval:false,
+        iterations_limit:false,
+        ingibition_radius:null
+    },
     switcher: {
         button_id: 'action',
         btn_text: '■ Stop it! ',
@@ -49,6 +58,18 @@ var Matrix = {
             $('#' + Matrix.switcher.button_id)
                 .text(Matrix.switcher.btn_text).toggleClass('start stop');
             Matrix.switcher.btn_text = btnVal;
+        }
+    },
+    handleSettings:function(data_to_store){
+        if(data_to_store)
+            window.localStorage.setItem('settings',JSON.stringify(data_to_store));
+        else{
+            var mSettings=null;
+            if(mSettings=JSON.parse(window.localStorage.getItem('settings'))){
+                console.dir(mSettings);
+                this.settings.columns = mSettings.settings.columns;
+                console.log('this.settings.columns = '+this.settings.columns);
+            }
         }
     },
     getColsSelect: function(){
@@ -135,35 +156,28 @@ var Matrix = {
     },
     // all possibles numbers of columns
     setMatrixColumnsRange:function(){
-        var cols = $('td',Matrix.lines[0]).size()-1;
-        var rows = Matrix.lines.length;
+        var cols = $('td',this.lines[0]).size()-1;
+        var rows = this.lines.length;
         var cellsNum = cols*rows; console.log('cellsNum = '+cellsNum);
-        // store data in local storage
-        var setInitDb = function(){
-            var iColsNum=(cellsNum/2).toFixed();
+
+        // set init columns number
+        var initColsNum;
+        // if there is no settings stored in db, add them there
+        if(!this.settings.columns){ console.log('no settings.columns');
+            initColsNum=(cellsNum/2).toFixed();
             var tSet = {
                 settings:{
-                    columns:iColsNum
+                    columns:initColsNum
                 }
             };
-            window.localStorage.setItem('settings',JSON.stringify(tSet));
-            return iColsNum;
-        };
-        // set init columns number
-        var dbTable,initColsNum;
-        // if there is no settings stored in db, add them there
-        if(!(dbTable = window.localStorage.getItem('settings'))) {
-            initColsNum=setInitDb();
-        }else{ // get data from local storage
-            dbTable=JSON.parse(dbTable);
-            // if there is no columns set in db, add it there
-            if(!(initColsNum=dbTable.settings.columns)){
-                initColsNum=setInitDb();
-            }
-        }   console.log('initColsNum = '+initColsNum);
+            // store data in local storage
+            this.handleSettings(tSet);
+        }
+        // keep it, it will be checked  bellow
+        initColsNum = this.settings.columns;
         var h, w, dvd, cff, curValueOfCell, curCellEnc; //calculate columns by sides
         var colSelect = this.getColsSelect(), cOption;
-        var cRatio = cellsNum*Matrix.limit.ratio;
+        var cRatio = cellsNum*this.limit.ratio;
         for(var i=1;i<cellsNum-1;i++){
             curValueOfCell = (i>1)? cellsNum-i:cellsNum;
             cff = Math.sqrt(cellsNum/curValueOfCell);
@@ -191,4 +205,54 @@ var Matrix = {
             if(curValueOfCell<=cRatio) break;
         }
     }
-}; 
+};
+/**
+ *
+ */
+function setColumns(select){ // if redefine set
+
+    var mGrid = 'mGrid';
+    var getSelVal = function(){
+        return parseInt($('option:selected',select).val());
+    };
+    if(select) { // got selected columns' number onChange
+        $('#'+mGrid).remove();
+        // store data in local storage
+        var sets=JSON.parse(window.localStorage.getItem('settings'));
+        sets.settings.columns = getSelVal();
+        window.localStorage.setItem('settings',JSON.stringify(sets));
+    }
+    else select = Matrix.getColsSelect(); //console.dir(select);
+    //
+    var activeSet = Matrix.columnsSets[getSelVal()];
+    var cHeight = Matrix.regionSpace.height/activeSet[0];
+    var cWidth  = Matrix.regionSpace.width/activeSet[1];
+    //console.log('rows: '+activeSet[0]+'('+cHeight+'), cols: '+activeSet[1]+'('+cWidth+')');
+    var cover = $('<div/>',{
+        id:mGrid
+    }).css({
+            //background:'yellow',
+            //opacity:    0.65,
+            position:   'absolute',
+            top:        Matrix.regionSpace.top+'px',
+            left:       Matrix.regionSpace.left+'px',
+            width:      Matrix.regionSpace.width+'px',
+            height:     Matrix.regionSpace.height+'px'
+        });
+    $('body').prepend(cover);
+    var colDm = $('td',Matrix.lines[0]).eq(1).width();
+    var vMargin = (cHeight-colDm)/2;
+    var curStyle,
+        fullStyle,
+        cStyle = 'height:'+cHeight+'px; '+
+            'width:'+cWidth+'px; '+
+            'line-height:'+cHeight+'px; ',
+        innerStyle='margin-top:'+vMargin+'px; margin-bottom:'+vMargin+'px';
+    for(var i=0; i<activeSet[0];i++){
+        curStyle = cStyle+'top:'+cHeight*i+'px;';
+        for(var j=0; j<activeSet[1];j++){
+            fullStyle = curStyle+'left:'+cWidth*j+'px;';
+            $(cover).append('<div style="'+fullStyle+'" class="column"><div style="height:'+colDm+'px; width:'+colDm+'px;'+innerStyle+'"></div></div>');
+        }
+    }
+}

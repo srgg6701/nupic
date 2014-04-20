@@ -1,5 +1,7 @@
 //
 $(function() {
+    // set data from local storage
+    Matrix.handleSettings();
     // get table headers:
     Matrix.makeMatrixMap('headers');
     // set id id to the cells:
