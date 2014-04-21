@@ -3,10 +3,10 @@ var Matrix = {
     headers: [],
     random_offset: false,
     erosion: false,
-    init: {
-        cols: null, // In reality it will be re-calculated immediately after the page is being loaded
-        cells: 10
-    },
+    /*init: {
+     cols: null, // In reality it will be re-calculated immediately after the page is being loaded
+     cells: 10
+     },*/
     limit: {
         cells: {
             min: 1,
@@ -43,13 +43,15 @@ var Matrix = {
     },
     // stored data
     settings: {
-        columns: null,
-        distortion: null, // erosion OR random_offset
-        cells: [null, 8],
+        // these must be literals:
+        columns: null,  // is set in the setColumnsArea()
+        distortion: null, // erosion OR random_offset. May be unset
+        // check default data. These must be objects:
+        cells: [null, 10],
         input_mode: [null, 'random'],
-        interval: [false, 1000],
-        iterations_limit: [false, 0],
-        ingibition_radius: [null, 2]
+        interval: [null, 1000],
+        iterations_limit: [null, 0],
+        inhibition_radius: [null, 2]
     },
     switcher: {
         button_id: 'action',
@@ -74,23 +76,27 @@ var Matrix = {
             if (dStorage = JSON.parse(window.localStorage.getItem('settings'))) {
                 if (dSettings = dStorage.settings) {
                     console.dir(dSettings);
-                    for (var field in this.settings) {
-                        console.log('field = ' + field);
+                    for (var field in this.settings) { //console.log('field = ' + field);
                         //
                         if (dSettings[field]) {
-                            console.log('name = ' + field);
-                            console.dir(dSettings[field]);
-                            if (typeof this.settings[field] == 'object' && this.settings[field] !== null) {
+                            //console.log('name = ' + field);
+                            //console.dir(dSettings[field]);
+                            if (this.settings[field]) { // is array, not NULL
                                 this.settings[field][0] = dSettings[field];
-                                console.dir(this.settings[field]);
+                                //console.dir(this.settings[field]);
                             } else {
                                 this.settings[field] = dSettings[field];
-                                console.log(this.settings[field]);
+                                //console.log(this.settings[field]);
                             }
                         }
                     }
                 }
             }
+            /* check settings values to avoid NULLs because it is necessary to set default data;
+             if we hadn't them in localStorage, we have not them at all */
+            for (var field in this.settings)
+                if (this.settings[field] && this.settings[field][0] === null)
+                    this.settings[field][0] = this.settings[field][1];
         }
     },
     /**
@@ -218,7 +224,7 @@ var Matrix = {
                 if (initColsNum && curValueOfCell <= initColsNum) {
                     cOption += ' selected="selected"';
                     initColsNum = null;
-                    this.init.cols = curValueOfCell;
+                    this.settings.columns = curValueOfCell;
                 }
                 cOption += '>' + curValueOfCell + '</option>';
                 //console.log((h*w)+' = '+h+' x '+w);
@@ -232,6 +238,7 @@ var Matrix = {
     }
 };
 /**
+ * Called on load
  * it here because it is being called from the index page as well
  */
 function setColumnsArea(select) { // if redefine set

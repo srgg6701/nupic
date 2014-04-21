@@ -14,7 +14,7 @@ $(function() {
     // distortion: null,
     //setDistortion();
     // cells: [null, 8],
-    $('#numCells').text(Matrix.init.cells);
+    $('#numCells').text(Matrix.settings.cells[0]);
     //setCells();
     // input_mode: [null, 'random'],
     // interval: [false, 1000],
