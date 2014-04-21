@@ -5,7 +5,7 @@ $( function(){
         if($('#limit').val()=='0')
             $('#limit').val('10'); // by default, equals to the inputs length
     });
-    // manage errosion:
+    // manage erosion:
     $('#erosion').on('click', function(){
         //Matrix.erosion=this.checked; //console.log('Matrix.erosion = '+Matrix.erosion);
         switchDistortionType(this);
@@ -25,6 +25,7 @@ $( function(){
         // re-arrange columns set:
         setColumnsArea(event.currentTarget);
     };
+
 });
 
 /**

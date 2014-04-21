@@ -142,7 +142,6 @@ var Matrix = {
                 }
             });
         }); //console.groupEnd();
-        $('#numCells').text(this.init.cells);
     },
     /**
      * get feed-forward input (FFI):

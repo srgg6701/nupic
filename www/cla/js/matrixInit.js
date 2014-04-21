@@ -12,7 +12,10 @@ $(function() {
     setColumnsArea();
     /*  arrange other settings: */
     // distortion: null,
+    //setDistortion();
     // cells: [null, 8],
+    $('#numCells').text(Matrix.init.cells);
+    //setCells();
     // input_mode: [null, 'random'],
     // interval: [false, 1000],
     // iterations_limit: [false, 0],

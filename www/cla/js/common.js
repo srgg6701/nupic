@@ -10,7 +10,7 @@ $(function() {
 /**
  * Change block value
  */
-function changeValue(btn) {
+function changeColumnsNumber(btn) {
     var func;
     if (btn.className.indexOf('minus') != -1) {
         func = 'next';
