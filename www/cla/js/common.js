@@ -1,12 +1,18 @@
 $(function() {
     $('[type="range"]').on('change', function() {
-        document.getElementById($(this).attr('data-bind')).value = $(this).val();
+        syncRanges(this, 'data-bind');
+        //document.getElementById($(this).attr('data-bind')).value = $(this).val();
     });
     $('[data-range-id]').on('keyup', function() {
-        document.getElementById($(this).attr('data-range-id')).value = $(this).val();
+        syncRanges(this, 'data-range-id');
+        //document.getElementById($(this).attr('data-range-id')).value = $(this).val();
     });
 });
-
+/**
+ */
+function syncRanges(obj, binded_id){
+    document.getElementById($(obj).attr(binded_id)).value = $(obj).val();
+}
 /**
  * Change block value
  */

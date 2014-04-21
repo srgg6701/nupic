@@ -1,6 +1,6 @@
 //
 $(function() {
-    // set data from local storage
+    // set data from local storage */
     Matrix.handleSettings();
     // get table headers:
     Matrix.makeMatrixMap('headers');
@@ -10,15 +10,7 @@ $(function() {
     Matrix.setMatrixColumnsRange();
     // arrange columns area
     setColumnsArea();
-    /*  arrange other settings: */
-    // distortion: null,
-    //setDistortion();
-    // cells: [null, 8],
-    $('#numCells').text(Matrix.settings.cells[0]);
-    //setCells();
-    // input_mode: [null, 'random'],
-    // interval: [false, 1000],
-    // iterations_limit: [false, 0],
-    // inhibition_radius: [null, 2]
-
+    /*  arrange other settings:
+    distortion, num cells, interval, iterations_limit, inhibition_radius*/
+    Matrix.pushSettingsToHTML();
 });

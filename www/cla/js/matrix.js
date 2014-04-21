@@ -3,10 +3,6 @@ var Matrix = {
     headers: [],
     random_offset: false,
     erosion: false,
-    /*init: {
-     cols: null, // In reality it will be re-calculated immediately after the page is being loaded
-     cells: 10
-     },*/
     limit: {
         cells: {
             min: 1,
@@ -35,6 +31,10 @@ var Matrix = {
     },
     lines: null,
     intervalId: null,
+    ranges:{
+        interval:['interval','input_msec'],
+        iterations:['limit','input_limit']
+    },
     regionSpace: {
         left: null,
         top: null,
@@ -45,8 +45,8 @@ var Matrix = {
     settings: {
         // these must be literals:
         columns: null,  // is set in the setColumnsArea()
-        distortion: null, // erosion OR random_offset. May be unset
         // check default data. These must be objects:
+        distortion: null, // erosion OR random_offset. May be unset
         cells: [null, 10],
         input_mode: [null, 'random'],
         interval: [null, 1000],
@@ -94,10 +94,31 @@ var Matrix = {
             }
             /* check settings values to avoid NULLs because it is necessary to set default data;
              if we hadn't them in localStorage, we have not them at all */
-            for (var field in this.settings)
-                if (this.settings[field] && this.settings[field][0] === null)
+            for (var field in this.settings){
+                if (this.settings[field] && this.settings[field][0] === null){
                     this.settings[field][0] = this.settings[field][1];
+                }
+            }
         }
+    },
+    /**
+     * push settings data into HTML
+     */
+    pushSettingsToHTML:function(){
+        // cells num
+        $('#numCells').text(this.settings.cells[0]);
+        // input_mode
+        $('[name="ffi-order"]').attr('checked', false);
+        $('#ffi-'+this.settings.input_mode).attr('checked', true);
+        // distortion
+        if(this.settings.distortion)
+            $('#'+this.settings.distortion).attr('checked', true);
+        // interval
+        $('#'+this.ranges.interval[0]+' #'+this.ranges.interval[1])
+            .val(this.settings.interval[0]);
+        // iterations limit
+        $('#'+this.ranges.iterations[0]+' #'+this.ranges.iterations[1])
+            .val(this.settings.iterations_limit[0])
     },
     /**
      * returns select element
