@@ -20,6 +20,11 @@ $( function(){
         console.log('Matrix is: '+Matrix.run);
         (!Matrix.run)? runMatrix():stopMatrix();
     });
+    // re-set columns
+    Matrix.getColsSelect().onchange = function(event){
+        // re-arrange columns set:
+        setColumnsArea(event.currentTarget);
+    };
 });
 
 /**

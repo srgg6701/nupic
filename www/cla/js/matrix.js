@@ -44,7 +44,7 @@ var Matrix = {
     // stored data
     settings: {
         columns: null,
-        distortion: null,
+        distortion: null, // erosion OR random_offset
         cells: [null, 8],
         input_mode: [null, 'random'],
         interval: [false, 1000],
@@ -62,14 +62,15 @@ var Matrix = {
         }
     },
     /**
-     *  called onLoad
+     *  called onLoad / change
      */
     handleSettings: function (data_to_store) {
-        if (data_to_store) {
+        if (data_to_store) { // called on change
             window.localStorage.setItem('settings', JSON.stringify(data_to_store));
-        } else {
+        } else { // called on load
             var dStorage = null,
                 dSettings = null;
+            // Take settings from localStorage and push them into Matrix.settings
             if (dStorage = JSON.parse(window.localStorage.getItem('settings'))) {
                 if (dSettings = dStorage.settings) {
                     console.dir(dSettings);
@@ -234,8 +235,8 @@ var Matrix = {
 /**
  * it here because it is being called from the index page as well
  */
-function setColumns(select) { // if redefine set
-
+function setColumnsArea(select) { // if redefine set
+    //
     var mGrid = 'mGrid';
     var getSelVal = function () {
         return parseInt($('option:selected', select).val());

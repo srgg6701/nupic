@@ -5,10 +5,6 @@ $(function() {
     $('[data-range-id]').on('keyup', function() {
         document.getElementById($(this).attr('data-range-id')).value = $(this).val();
     });
-    Matrix.getColsSelect().onchange = function(event){
-        // get current colums set:
-        setColumns(event.currentTarget);
-    };
 });
 
 /**
