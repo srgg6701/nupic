@@ -4,6 +4,7 @@
         <title>CLA</title>
         <link rel="stylesheet" type="text/css" href="css.css">
         <script src="libs/jquery-1.8.1.js"></script>
+        <script src="js/db.js"></script>
         <script src="js/matrix.js"></script>
         <script src="js/datasets.js"></script>
         <script src="js/matrixInit.js"></script>
@@ -426,15 +427,29 @@
                     <div class="left" id="scount">
                         <img class="m-right2" src="images/cells_per_column.png" title="Cells per column"/>Cells <b>per</b> col:
                         <span id="cells_per_column">
-                            <span class="minus" onClick="changeColumnsNumber(this)">
-                        <div>-</div></span>
+                            <span class="minus" onClick="changePlusMinus(this)">
+                        		<div>-</div>
+                        	</span>
                             <span id="numCells"></span>
-                            <span class="plus" onClick="changeColumnsNumber(this)"><div>+</div></span>
+                            <span class="plus" onClick="changePlusMinus(this)">
+                            	<div>+</div>
+                            </span>
                         </span>
                     </div>
                 </div>
-                <div class="custom">
-                    <b>Input mode:</b>
+                <div id="inhibit" class="custom"><img src="images/radius2.png" width="32" height="32" alt=""/><strong>Inhibition radius</strong> (in cells): 
+                    <span id="inhibition_radius">
+                        <span class="minus" onClick="changePlusMinus(this)">
+                    		<div>-</div>
+                        </span>
+                        <span id="inhibitValue"></span>
+                        <span class="plus" onClick="changePlusMinus(this)">
+                        	<div>+</div>
+                        </span>
+                  </span>
+              </div>
+                <hr>
+                <div class="custom"><b>Input mode:</b>
                     <label>
                         <input id="ffi-ordered" type="radio" name="ffi-order" value="1">ordered
                     </label>

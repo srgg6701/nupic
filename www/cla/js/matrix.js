@@ -8,6 +8,10 @@ var Matrix = {
             min: 1,
             max: 20
         },
+        inhibition_radius:{
+            min: 1,
+            max: 10
+        },
         ratio: 0.05 // 16 columns
     },
     // array of columns by width and height
@@ -51,7 +55,7 @@ var Matrix = {
         input_mode: [null, 'random'],
         interval: [null, 1000],
         iterations_limit: [null, 0],
-        inhibition_radius: [null, 2]
+        inhibition_radius: [null, 4]
     },
     switcher: {
         button_id: 'action',
@@ -68,12 +72,12 @@ var Matrix = {
      */
     handleSettings: function (data_to_store) {
         if (data_to_store) { // called on change
-            window.localStorage.setItem('settings', JSON.stringify(data_to_store));
+            setDb(data_to_store);
         } else { // called on load
             var dStorage = null,
                 dSettings = null;
             // Take settings from localStorage and push them into Matrix.settings
-            if (dStorage = JSON.parse(window.localStorage.getItem('settings'))) {
+            if (dStorage = getDb()) {
                 if (dSettings = dStorage.settings) {
                     console.dir(dSettings);
                     for (var field in this.settings) { //console.log('field = ' + field);
@@ -92,7 +96,8 @@ var Matrix = {
                     }
                 }
             }
-            /* check settings values to avoid NULLs because it is necessary to set default data;
+            /**
+             * check settings values to avoid NULLs because it is necessary to set default data;
              if we hadn't them in localStorage, we have not them at all */
             for (var field in this.settings){
                 if (this.settings[field] && this.settings[field][0] === null){
@@ -107,6 +112,8 @@ var Matrix = {
     pushSettingsToHTML:function(){
         // cells num
         $('#numCells').text(this.settings.cells[0]);
+        // inhibition radius
+        $('#inhibitValue').text(this.settings.inhibition_radius[0]);
         // input_mode
         $('[name="ffi-order"]').attr('checked', false);
         $('#ffi-'+this.settings.input_mode).attr('checked', true);
@@ -271,9 +278,9 @@ function setColumnsArea(select) { // if redefine set
     if (select) { // got selected columns' number onChange
         $('#' + mGrid).remove();
         // store data in local storage
-        var sets = JSON.parse(window.localStorage.getItem('settings'));
+        var sets = getDb();
         sets.settings.columns = getSelVal();
-        window.localStorage.setItem('settings', JSON.stringify(sets));
+        setDb(sets);
     }
     else select = Matrix.getColsSelect(); //console.dir(select);
     //
