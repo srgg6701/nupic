@@ -10,5 +10,7 @@ function getDb(db_name){
  */
 function setDb(data,db_name){
     if(!db_name) db_name = 'settings';
+    console.dir(data);
     window.localStorage.setItem(db_name, JSON.stringify(data));
+    console.log('data stored...');
 }
