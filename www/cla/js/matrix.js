@@ -76,7 +76,9 @@ var Matrix = {
         } else { // called on load
             var dStorage = null,
                 dSettings = null;
-            // Take settings from localStorage and push them into Matrix.settings
+            /**
+             * Takes settings from localStorage
+             * and pushes them into Matrix.settings */
             if (dStorage = getDb()) {
                 if (dSettings = dStorage.settings) {
                     console.dir(dSettings);
@@ -115,17 +117,19 @@ var Matrix = {
         // inhibition radius
         $('#inhibitValue').text(this.settings.inhibition_radius[0]);
         // input_mode
+        // first, un-check all radios
         $('[name="ffi-order"]').attr('checked', false);
+        // second, check that is set in the Matrix.settins
         $('#ffi-'+this.settings.input_mode).attr('checked', true);
         // distortion
         if(this.settings.distortion)
             $('#'+this.settings.distortion).attr('checked', true);
         // interval
-        $('#'+this.ranges.interval[0]+' #'+this.ranges.interval[1])
+        $('#'+this.ranges.interval[0]+', #'+this.ranges.interval[1])
             .val(this.settings.interval[0]);
         // iterations limit
-        $('#'+this.ranges.iterations[0]+' #'+this.ranges.iterations[1])
-            .val(this.settings.iterations_limit[0])
+        $('#'+this.ranges.iterations[0]+', #'+this.ranges.iterations[1])
+            .val(this.settings.iterations_limit[0]);
     },
     /**
      * returns select element
@@ -265,54 +269,3 @@ var Matrix = {
         }
     }
 };
-/**
- * Called on load
- * it here because it is being called from the index page as well
- */
-function setColumnsArea(select) { // if redefine set
-    //
-    var mGrid = 'mGrid';
-    var getSelVal = function () {
-        return parseInt($('option:selected', select).val());
-    };
-    if (select) { // got selected columns' number onChange
-        $('#' + mGrid).remove();
-        // store data in local storage
-        var sets = getDb();
-        sets.settings.columns = getSelVal();
-        setDb(sets);
-    }
-    else select = Matrix.getColsSelect(); //console.dir(select);
-    //
-    var activeSet = Matrix.columnsSets[getSelVal()];
-    var cHeight = Matrix.regionSpace.height / activeSet[0];
-    var cWidth = Matrix.regionSpace.width / activeSet[1];
-    //console.log('rows: '+activeSet[0]+'('+cHeight+'), cols: '+activeSet[1]+'('+cWidth+')');
-    var cover = $('<div/>', {
-        id: mGrid
-    }).css({
-            //background:'yellow',
-            //opacity:    0.65,
-            position: 'absolute',
-            top: Matrix.regionSpace.top + 'px',
-            left: Matrix.regionSpace.left + 'px',
-            width: Matrix.regionSpace.width + 'px',
-            height: Matrix.regionSpace.height + 'px'
-        });
-    $('body').prepend(cover);
-    var colDm = $('td', Matrix.lines[0]).eq(1).width();
-    var vMargin = (cHeight - colDm) / 2;
-    var curStyle,
-        fullStyle,
-        cStyle = 'height:' + cHeight + 'px; ' +
-            'width:' + cWidth + 'px; ' +
-            'line-height:' + cHeight + 'px; ',
-        innerStyle = 'margin-top:' + vMargin + 'px; margin-bottom:' + vMargin + 'px';
-    for (var i = 0; i < activeSet[0]; i++) {
-        curStyle = cStyle + 'top:' + cHeight * i + 'px;';
-        for (var j = 0; j < activeSet[1]; j++) {
-            fullStyle = curStyle + 'left:' + cWidth * j + 'px;';
-            $(cover).append('<div style="' + fullStyle + '" class="column"><div style="height:' + colDm + 'px; width:' + colDm + 'px;' + innerStyle + '"></div></div>');
-        }
-    }
-}

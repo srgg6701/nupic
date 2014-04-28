@@ -1,4 +1,16 @@
 /**
+ * Run outer function in data loop and (optional) store new data into db
+ */
+function handleDb(settings_field,new_value,skip_storing){
+    var db = getDb(); //console.log(db.settings);
+    db.settings[settings_field]=new_value;
+    if(!skip_storing){
+        setDb(db);
+        return true;
+    }else
+        return db;
+}
+/**
  * Get data from DB
  */
 function getDb(db_name){

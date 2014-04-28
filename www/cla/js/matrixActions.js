@@ -1,19 +1,15 @@
 $( function(){
-    //console.dir(Marix);
     $('#ffi-ordered').on('click', function(){
-        //console.log('val = '+$('#limit').val());
         if($('#limit').val()=='0')
             $('#limit').val('10'); // by default, equals to the inputs length
     });
     // manage erosion:
     $('#erosion').on('click', function(){
-        //Matrix.erosion=this.checked; //console.log('Matrix.erosion = '+Matrix.erosion);
         switchDistortionType(this);
     });
     // manage random offset:
     $('#random_offset').on('click', function(){
         switchDistortionType(this);
-        //Matrix.random_offset=this.checked; //console.log('Matrix.erosion = '+Matrix.erosion);
     });
     // run or stop Matrix:
     $('#'+Matrix.switcher.button_id).on('click', function(){
