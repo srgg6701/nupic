@@ -18,13 +18,14 @@ function getDb(db_name){
     return JSON.parse(window.localStorage.getItem(db_name));
 }
 /**
- * Set data into DB
+ * Store data into DB
  */
 function setDb(data,db_name){
     if(!db_name) db_name = 'settings';
     console.dir(data);
     window.localStorage.setItem(db_name, JSON.stringify(data));
     console.log('data stored...');
-    // re-set Matrix settings
-
+    // re-set Matrix settings in order to keep them in actual state
+    Matrix.transferDataToMatrixSettings(data[db_name]);
+    Matrix.checkSettingsNotNull(true);
 }

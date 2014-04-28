@@ -95,14 +95,14 @@ var Matrix = {
      */
     transferDataToMatrixSettings:function(dSettings){
         //console.dir(dSettings);
-        for (var field in this.settings) { //console.log('field = ' + field);
+        for (var field in Matrix.settings) { //console.log('field = ' + field);
             //
-            if (dSettings[field]) {
-                //console.log('name = ' + field); //console.dir(dSettings[field]);
-                if (this.settings[field]) { // is array, not NULL
-                    this.settings[field][0] = dSettings[field]; //console.dir(this.settings[field]);
+            if (dSettings[field]) { // the value of db field exists
+                //console.log('name = ' + field); console.dir(dSettings[field]);
+                if (Matrix.settings[field] && typeof (Matrix.settings[field]) == 'object') { // is array, not NULL
+                    Matrix.settings[field][0] = dSettings[field]; //console.dir(Matrix.settings[field]);
                 } else {
-                    this.settings[field] = dSettings[field]; //console.log(this.settings[field]);
+                    Matrix.settings[field] = dSettings[field]; //console.log(Matrix.settings[field]);
                 }
             }
         }
@@ -110,10 +110,15 @@ var Matrix = {
     /**
      *  check settings values to avoid NULLs because it is necessary to set default data;
         if we hadn't them in localStorage, we have not them at all */
-    checkSettingsNotNull:function(){
+    checkSettingsNotNull:function(test){
         for (var field in Matrix.settings){
             if (Matrix.settings[field] && Matrix.settings[field][0] === null){
                 Matrix.settings[field][0] = Matrix.settings[field][1];
+            }
+            if(test) {
+                var ms = Matrix.settings[field];
+                if(typeof (ms) == 'object') ms = ms[0];
+                console.log(field+': '+ms);
             }
         }
     },
