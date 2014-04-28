@@ -12,7 +12,7 @@ $(function(){
 });
 /**
  * Called on load
- * it here because it is being called from the index page as well
+ * it is here because it is being called from the index page as well
  */
 function setColumnsArea(select) { // if redefine set
     //
@@ -52,12 +52,14 @@ function setColumnsArea(select) { // if redefine set
         cStyle = 'height:' + cHeight + 'px; ' +
             'width:' + cWidth + 'px; ' +
             'line-height:' + cHeight + 'px; ',
-        innerStyle = 'margin-top:' + vMargin + 'px; margin-bottom:' + vMargin + 'px';
+        innerStyle = 'margin-top:' + vMargin + 'px; margin-bottom:' + vMargin + 'px',
+        colNum=0;
     for (var i = 0; i < activeSet[0]; i++) {
         curStyle = cStyle + 'top:' + cHeight * i + 'px;';
         for (var j = 0; j < activeSet[1]; j++) {
+            colNum++;
             fullStyle = curStyle + 'left:' + cWidth * j + 'px;';
-            $(cover).append('<div style="' + fullStyle + '" class="column"><div style="height:' + colDm + 'px; width:' + colDm + 'px;' + innerStyle + '"></div></div>');
+            $(cover).append('<div data-col-num="'+colNum+'" style="' + fullStyle + '" class="column"><div style="height:' + colDm + 'px; width:' + colDm + 'px;' + innerStyle + '"></div></div>');
         }
     }
 }

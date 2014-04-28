@@ -25,4 +25,6 @@ function setDb(data,db_name){
     console.dir(data);
     window.localStorage.setItem(db_name, JSON.stringify(data));
     console.log('data stored...');
+    // re-set Matrix settings
+
 }

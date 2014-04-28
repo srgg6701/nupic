@@ -33,6 +33,9 @@ h1, h2, h3, h4, h5, h6, .Arial {
 .active{
     background-color: #666;
 }
+.borderGrey{
+    border: solid 1px grey;
+}
 .column{
     display: inline-block;
     position: absolute;

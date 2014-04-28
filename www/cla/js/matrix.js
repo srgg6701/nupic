@@ -81,34 +81,43 @@ var Matrix = {
              * and pushes them into Matrix.settings */
             if (dStorage = getDb()) {
                 if (dSettings = dStorage.settings) {
-                    console.dir(dSettings);
-                    for (var field in this.settings) { //console.log('field = ' + field);
-                        //
-                        if (dSettings[field]) {
-                            //console.log('name = ' + field);
-                            //console.dir(dSettings[field]);
-                            if (this.settings[field]) { // is array, not NULL
-                                this.settings[field][0] = dSettings[field];
-                                //console.dir(this.settings[field]);
-                            } else {
-                                this.settings[field] = dSettings[field];
-                                //console.log(this.settings[field]);
-                            }
-                        }
-                    }
+                    this.transferDataToMatrixSettings(dSettings);
                 }
             }
             /**
              * check settings values to avoid NULLs because it is necessary to set default data;
              if we hadn't them in localStorage, we have not them at all */
-            for (var field in this.settings){
-                if (this.settings[field] && this.settings[field][0] === null){
-                    this.settings[field][0] = this.settings[field][1];
+            this.checkSettingsNotNull();
+        }
+    },
+    /**
+     * Transfer data from db to the Matrix.settings
+     */
+    transferDataToMatrixSettings:function(dSettings){
+        //console.dir(dSettings);
+        for (var field in this.settings) { //console.log('field = ' + field);
+            //
+            if (dSettings[field]) {
+                //console.log('name = ' + field); //console.dir(dSettings[field]);
+                if (this.settings[field]) { // is array, not NULL
+                    this.settings[field][0] = dSettings[field]; //console.dir(this.settings[field]);
+                } else {
+                    this.settings[field] = dSettings[field]; //console.log(this.settings[field]);
                 }
             }
         }
     },
     /**
+     *  check settings values to avoid NULLs because it is necessary to set default data;
+        if we hadn't them in localStorage, we have not them at all */
+    checkSettingsNotNull:function(){
+        for (var field in Matrix.settings){
+            if (Matrix.settings[field] && Matrix.settings[field][0] === null){
+                Matrix.settings[field][0] = Matrix.settings[field][1];
+            }
+        }
+    },
+     /**
      * push settings data into HTML
      */
     pushSettingsToHTML:function(){
@@ -228,8 +237,6 @@ var Matrix = {
         var cols = $('td', this.lines[0]).size() - 1;
         var rows = this.lines.length;
         var cellsNum = cols * rows;
-        console.log('cellsNum = ' + cellsNum);
-
         // set init columns number
         var initColsNum;
         // if there is no settings stored in db, add them there
@@ -257,12 +264,12 @@ var Matrix = {
                     cOption += ' selected="selected"';
                     initColsNum = null;
                     this.settings.columns = curValueOfCell;
+                    console.log(curValueOfCell+' : '+h+' x '+w);
                 }
                 cOption += '>' + curValueOfCell + '</option>';
                 //console.log((h*w)+' = '+h+' x '+w);
                 $(colSelect).append(cOption);
                 this.columnsSets[curValueOfCell] = [h, w];
-                //console.dir(this.columnsSets[curValueOfCell]);
             }
             // avoid too small amount of columns
             if (curValueOfCell <= cRatio) break;
