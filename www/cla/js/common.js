@@ -24,10 +24,12 @@ $(function() {
         var columnsInMatrix = Matrix.columnsSets[Matrix.settings.columns][1];
         //
         var numberInRow = currentColumnNumber%columnsInMatrix; //console.log('numberInRow = '+numberInRow);
+        if(numberInRow===0) numberInRow = columnsInMatrix;
         var inhRadius = Matrix.settings.inhibition_radius[0];
         // calculate the rows above the column
         var rows_above = (currentColumnNumber-numberInRow)/columnsInMatrix,
             //              107 - 8 / 11
+            rows_above_real=(rows_above<inhRadius)? rows_above:inhRadius,
             rows_bellow = rows_above+inhRadius+ 1,
             recHorizontalLen = inhRadius*2;
 
@@ -56,16 +58,19 @@ $(function() {
             bottomRight=null;
 
         var rowLenFromLeft=null,
-            rowLenFromRight=null,
-            leftNumberOffset=null;
+            rowLenFromRight=null;
 
         if(leftEdge){
             if(topEdge){
                 topLeft = currentColumnNumber-inhRadius-(columnsInMatrix*inhRadius);
             }else{
-                topLeft = currentColumnNumber-(columnsInMatrix*rows_above)-inhRadius;
-            }
+                //topLeft = currentColumnNumber-(columnsInMatrix*rows_above)-inhRadius;
+                //if(rows_above_real<inhRadius)
+                topLeft = currentColumnNumber-(columnsInMatrix*rows_above_real)-inhRadius;
+                console.log('topLeft: '+topLeft+'\ncurrentColumnNumber: '+currentColumnNumber+
+                    '-'+(columnsInMatrix*rows_above_real)+'-'+inhRadius);
 
+            }
             if(bottomEdge){
                 bottomLeft = currentColumnNumber-inhRadius+(columnsInMatrix*inhRadius);
                 $('[data-col-num="'+bottomLeft+'"]').addClass('borderGrey');
@@ -73,9 +78,10 @@ $(function() {
             rowLenFromLeft = inhRadius+1+columnsInMatrix-numberInRow;
             if(rowLenFromLeft>columnsInMatrix) rowLenFromLeft=columnsInMatrix;
         }else{
-            topLeft = currentColumnNumber-(columnsInMatrix*rows_above)-numberInRow+1;
+            topLeft = currentColumnNumber-(columnsInMatrix*rows_above_real)-numberInRow+1;
         }   /*console.log('topLeft: '+topLeft+'\ncurrentColumnNumber: '+currentColumnNumber+
-            '-'+(columnsInMatrix*rows_above)+'-'+numberInRow+'-1');*/
+            '-'+(columnsInMatrix*rows_above_real)+'-'+numberInRow+'+1');*/
+
 
         $('[data-col-num="'+topLeft+'"]').addClass('borderGrey');
 
