@@ -50,13 +50,33 @@ $(function() {
         if(rows_bellow<=rows)
             bottomEdge = true;
             
-        console.log('leftEdge: '+leftEdge+'\ntopEdge: '+topEdge+'\nrightEdge: '+rightEdge+'\nbottomEdge: '+bottomEdge);
-
         var topLeft=null,
             topRight=null,
             bottomLeft=null,
             bottomRight=null;
-        
+        if(leftEdge){
+            if(topEdge){
+                topLeft = currentColumnNumber-inhRadius-(columnsInMatrix*inhRadius);
+                $('[data-col-num="'+topLeft+'"]').addClass('borderGrey');
+            }
+            if(bottomEdge){
+                bottomLeft = currentColumnNumber-inhRadius+(columnsInMatrix*inhRadius);
+                $('[data-col-num="'+bottomLeft+'"]').addClass('borderGrey');
+            }
+        }
+        if(rightEdge){
+            if(topEdge){
+                topRight = currentColumnNumber+inhRadius-(columnsInMatrix*inhRadius);
+                $('[data-col-num="'+topRight+'"]').addClass('borderGrey');
+            }
+            if(bottomEdge){
+                bottomRight = currentColumnNumber+inhRadius+(columnsInMatrix*inhRadius);
+                $('[data-col-num="'+bottomRight+'"]').addClass('borderGrey');
+            }
+        }
+
+        console.log('leftEdge: '+leftEdge+'\ntopEdge: '+topEdge+'\nrightEdge: '+rightEdge+'\nbottomEdge: '+bottomEdge);
+
 
     });
 
