@@ -19,13 +19,13 @@ $(function() {
         //
         var currentColumnNumber = parseInt($(colRect).attr('data-col-num'));
         // calculate its number in the row
-        var rows = Matrix.columnsSets[Matrix.settings.columns][0];
+        var rows = parseInt(Matrix.columnsSets[Matrix.settings.columns][0]);
         // columnsInMatrix in Matrix
-        var columnsInMatrix = Matrix.columnsSets[Matrix.settings.columns][1];
+        var columnsInMatrix = parseInt(Matrix.columnsSets[Matrix.settings.columns][1]);
         //
         var numberInRow = currentColumnNumber%columnsInMatrix; //console.log('numberInRow = '+numberInRow);
         if(numberInRow===0) numberInRow = columnsInMatrix;
-        var inhRadius = Matrix.settings.inhibition_radius[0];
+        var inhRadius = parseInt(Matrix.settings.inhibition_radius[0]);
         // calculate the rows above the column
         var rows_above = (currentColumnNumber-numberInRow)/columnsInMatrix,
             //              107 - 8 / 11
@@ -64,12 +64,9 @@ $(function() {
             if(topEdge){
                 topLeft = currentColumnNumber-inhRadius-(columnsInMatrix*inhRadius);
             }else{
-                //topLeft = currentColumnNumber-(columnsInMatrix*rows_above)-inhRadius;
-                //if(rows_above_real<inhRadius)
                 topLeft = currentColumnNumber-(columnsInMatrix*rows_above_real)-inhRadius;
-                console.log('topLeft: '+topLeft+'\ncurrentColumnNumber: '+currentColumnNumber+
-                    '-'+(columnsInMatrix*rows_above_real)+'-'+inhRadius);
-
+                /*console.log('topLeft: '+topLeft+'\ncurrentColumnNumber: '+currentColumnNumber+
+                    '-'+(columnsInMatrix*rows_above_real)+'-'+inhRadius);*/
             }
             if(bottomEdge){
                 bottomLeft = currentColumnNumber-inhRadius+(columnsInMatrix*inhRadius);
@@ -82,22 +79,33 @@ $(function() {
         }   /*console.log('topLeft: '+topLeft+'\ncurrentColumnNumber: '+currentColumnNumber+
             '-'+(columnsInMatrix*rows_above_real)+'-'+numberInRow+'+1');*/
 
-
-        $('[data-col-num="'+topLeft+'"]').addClass('borderGrey');
-
         if(rightEdge){
             if(topEdge){
                 topRight = currentColumnNumber+inhRadius-(columnsInMatrix*inhRadius);
-                $('[data-col-num="'+topRight+'"]').addClass('borderGrey');
+            }else{
+                if(leftEdge){
+                    topRight = topLeft+inhRadius*2;
+                    console.log('topRight: '+topRight+' = '+topLeft+
+                        '+'+columnsInMatrix+'-'+numberInRow+'+'+inhRadius);
+                }else{
+                    topRight = topLeft + numberInRow-1+inhRadius;
+                }
             }
+
             if(bottomEdge){
                 bottomRight = currentColumnNumber+inhRadius+(columnsInMatrix*inhRadius);
                 $('[data-col-num="'+bottomRight+'"]').addClass('borderGrey');
             }
-            if(!rowLenFromLeft){
-                rowLenFromRight = numberInRow+inhRadius;
+        }else{
+            if(!topEdge){
+                topRight = topLeft+columnsInMatrix-numberInRow+inhRadius;
+                console.log('topRight: '+topRight+' = '+topLeft+
+                    '+'+columnsInMatrix+'-'+numberInRow+'+'+inhRadius);
             }
         }
+
+        $('[data-col-num="'+topLeft+'"]').addClass('borderGrey');
+        $('[data-col-num="'+topRight+'"]').addClass('borderGrey');
 
         console.log('leftEdge: '+leftEdge+'\ntopEdge: '+topEdge+'\nrightEdge: '+rightEdge+'\nbottomEdge: '+bottomEdge);
 
