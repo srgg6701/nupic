@@ -54,16 +54,31 @@ $(function() {
             topRight=null,
             bottomLeft=null,
             bottomRight=null;
+
+        var rowLenFromLeft=null,
+            rowLenFromRight=null,
+            leftNumberOffset=null;
+
         if(leftEdge){
             if(topEdge){
                 topLeft = currentColumnNumber-inhRadius-(columnsInMatrix*inhRadius);
-                $('[data-col-num="'+topLeft+'"]').addClass('borderGrey');
+            }else{
+                topLeft = currentColumnNumber-(columnsInMatrix*rows_above)-inhRadius;
             }
+
             if(bottomEdge){
                 bottomLeft = currentColumnNumber-inhRadius+(columnsInMatrix*inhRadius);
                 $('[data-col-num="'+bottomLeft+'"]').addClass('borderGrey');
             }
-        }
+            rowLenFromLeft = inhRadius+1+columnsInMatrix-numberInRow;
+            if(rowLenFromLeft>columnsInMatrix) rowLenFromLeft=columnsInMatrix;
+        }else{
+            topLeft = currentColumnNumber-(columnsInMatrix*rows_above)-numberInRow+1;
+        }   /*console.log('topLeft: '+topLeft+'\ncurrentColumnNumber: '+currentColumnNumber+
+            '-'+(columnsInMatrix*rows_above)+'-'+numberInRow+'-1');*/
+
+        $('[data-col-num="'+topLeft+'"]').addClass('borderGrey');
+
         if(rightEdge){
             if(topEdge){
                 topRight = currentColumnNumber+inhRadius-(columnsInMatrix*inhRadius);
@@ -72,6 +87,9 @@ $(function() {
             if(bottomEdge){
                 bottomRight = currentColumnNumber+inhRadius+(columnsInMatrix*inhRadius);
                 $('[data-col-num="'+bottomRight+'"]').addClass('borderGrey');
+            }
+            if(!rowLenFromLeft){
+                rowLenFromRight = numberInRow+inhRadius;
             }
         }
 
