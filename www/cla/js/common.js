@@ -13,14 +13,20 @@ $(function() {
         var currentColumnNumber = $(this).attr('data-col-num');
 
     });
-    //
-    $('[data-col-num] div').on('click', function(){
-        setInhibitionArea(this);
+    // show inhibition area
+    $('[data-col-num] div').on('click mouseenter', function(event){
+        if(event.type=='click'){
+            dropColsFixation();
+            $(this).attr('data-col-state','fixed');
+        }
+        if(event.type=='click'||$(this).attr('data-col-state')||!$('[data-col-state]').size())
+            setInhibitionArea(this);
     });
 
     // clear all borders
     $('#td-clear').on('click', function(){
-        $('[data-col-num]').removeClass('borderGrey');
+        $('[data-col-num]').removeClass('inhibition_area');
+        dropColsFixation();
     });
     //-------------------------------------------------------------------
     // avoid selecting +/-
@@ -31,4 +37,9 @@ $(function() {
  */
 function syncRanges(obj, binded_id){
     document.getElementById($(obj).attr(binded_id)).value = $(obj).val();
+}
+/**
+ * */
+function dropColsFixation(){
+    $('div').removeAttr('data-col-state');
 }

@@ -33,8 +33,9 @@ h1, h2, h3, h4, h5, h6, .Arial {
 .active{
     background-color: #666;
 }
-.borderGrey{
-    border: solid 1px grey;
+.inhibition_area{
+    background-color: violet;
+    opacity: 0.4;
 }
 .column{
     display: inline-block;
@@ -42,13 +43,13 @@ h1, h2, h3, h4, h5, h6, .Arial {
     text-align: center;
 }
 .column>div{
-    border: solid 1px rgb(224, 224, 101);
+    border: solid 1px rgb(0, 0, 255);
     border-radius: 10px;
     margin: auto;
     opacity: 0.45;
 }
 .column>div:hover{
-    background-color: rgb(224, 224, 101);
+    background-color: rgb(153, 160, 249);
     opacity: 1;
 }
 .custom input[type="text"]{

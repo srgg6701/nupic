@@ -269,7 +269,7 @@ var Matrix = {
                     cOption += ' selected="selected"';
                     initColsNum = null;
                     this.settings.columns = curValueOfCell;
-                    console.log(curValueOfCell+' : '+h+' x '+w);
+                    //console.log(curValueOfCell+' : '+h+' x '+w);
                 }
                 cOption += '>' + curValueOfCell + '</option>';
                 //console.log((h*w)+' = '+h+' x '+w);

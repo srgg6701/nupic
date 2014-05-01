@@ -177,10 +177,7 @@ function setInhibitionArea(column){
         topEdge=null,
         rightEdge=null,
         bottomEdge=null,
-        topLeft=null,
-        topRight=null,
-        bottomLeft=null,
-        bottomRight=null;
+        topLeft,topRight,bottomLeft,bottomRight;
 
     if((currentColumnNumber%columnsInMatrix==0)
         || currentColumnNumber%columnsInMatrix>inhRadius)
@@ -209,20 +206,24 @@ function setInhibitionArea(column){
             topRight = currentColumnNumber+inhRadius-(columnsInMatrix*inhRadius);
         else{
             if(leftEdge)
-                topRight = topLeft+inhRadius*2;/*
-             console.log('topRight: '+topRight+' = '+topLeft+
-             '+'+columnsInMatrix+'-'+numberInRow+'+'+inhRadius);*/
+                topRight = topLeft+inhRadius*2;
             else
                 topRight = topLeft + numberInRow-1+inhRadius;
         }
     }else
         topRight = topLeft+columnsInMatrix-numberInRow+inhRadius;
 
-    bottomLeft = topLeft+(rows_bellow_real+rows_above_real)*columnsInMatrix;
-    bottomRight = topRight+(rows_bellow_real+rows_above_real)*columnsInMatrix; /*console.log('bottomRight: '+bottomRight+'\n= '+topRight+' + ('+rows_above_real+
-     '+'+rows_bellow_real+') *'+columnsInMatrix);*/
-    var edges = [topLeft,topRight,bottomLeft,bottomRight];
-    for(var i in edges)
-        $('[data-col-num="'+edges[i]+'"]').addClass('borderGrey');/*
-     console.log('leftEdge: '+leftEdge+'\ntopEdge: '+topEdge+'\nrightEdge: '+rightEdge+'\nbottomEdge: '+bottomEdge); */
-}
+    // set area
+    $('[data-col-num]').removeClass('inhibition_area');
+    var rowLen = topRight-topLeft+1;
+    for(var cNum = topLeft, i= 1, enlarger = columnsInMatrix-rowLen;
+            cNum < topLeft+(rows_above_real+rows_bellow_real+1)*(columnsInMatrix);
+            cNum++,
+            i++){
+        //console.log('cNum = '+cNum);
+        $('[data-col-num="'+cNum+'"]').addClass('inhibition_area');
+        if(i%rowLen===0){
+            cNum+=enlarger;
+            //console.log('new line, i = '+i+', rowLen = '+rowLen+', cNum = '+cNum);
+        }
+    }}
