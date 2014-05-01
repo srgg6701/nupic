@@ -147,3 +147,82 @@ function stopMatrix() {
     Matrix.run=false;
     Matrix.switcher.changeBtnVal();
 }
+/**
+ * Set inhibition area of active column
+ */
+function setInhibitionArea(column){
+    var colRect = $(column).parent();
+    $(colRect).toggleClass('borderGrey');
+    //
+    var currentColumnNumber = parseInt($(colRect).attr('data-col-num'));
+    // calculate its number in the row
+    var rows = parseInt(Matrix.columnsSets[Matrix.settings.columns][0]);
+    // columnsInMatrix in Matrix
+    var columnsInMatrix = parseInt(Matrix.columnsSets[Matrix.settings.columns][1]);
+    //
+    var numberInRow = currentColumnNumber%columnsInMatrix;
+    if(numberInRow===0) numberInRow = columnsInMatrix;
+    var inhRadius = parseInt(Matrix.settings.inhibition_radius[0]);
+    // calculate the rows above the column
+    var rows_above = (currentColumnNumber-numberInRow)/columnsInMatrix,
+        rows_above_real=(rows_above<inhRadius)? rows_above:inhRadius,
+        rows_bellow = rows_above+inhRadius+ 1,
+        rows_bellow_real = null,
+        recHorizontalLen = inhRadius*2;
+    var fullRowsBellowAmount=Math.floor((Matrix.settings.columns-currentColumnNumber)/columnsInMatrix),
+        rows_bellow_real = (fullRowsBellowAmount<inhRadius)?
+            fullRowsBellowAmount:inhRadius;
+
+    var leftEdge=null,
+        topEdge=null,
+        rightEdge=null,
+        bottomEdge=null,
+        topLeft=null,
+        topRight=null,
+        bottomLeft=null,
+        bottomRight=null;
+
+    if((currentColumnNumber%columnsInMatrix==0)
+        || currentColumnNumber%columnsInMatrix>inhRadius)
+        leftEdge = true;
+
+    if(rows_above>=inhRadius)
+        topEdge = true;
+
+    if((currentColumnNumber%columnsInMatrix>0)
+        && currentColumnNumber%columnsInMatrix<=recHorizontalLen+2)
+        rightEdge = true;
+
+    if(rows_bellow<=rows)
+        bottomEdge = true;
+
+    if(leftEdge){
+        if(topEdge)
+            topLeft = currentColumnNumber-inhRadius-(columnsInMatrix*inhRadius);
+        else
+            topLeft = currentColumnNumber-(columnsInMatrix*rows_above_real)-inhRadius;
+    }else
+        topLeft = currentColumnNumber-(columnsInMatrix*rows_above_real)-numberInRow+1;
+
+    if(rightEdge){
+        if(topEdge)
+            topRight = currentColumnNumber+inhRadius-(columnsInMatrix*inhRadius);
+        else{
+            if(leftEdge)
+                topRight = topLeft+inhRadius*2;/*
+             console.log('topRight: '+topRight+' = '+topLeft+
+             '+'+columnsInMatrix+'-'+numberInRow+'+'+inhRadius);*/
+            else
+                topRight = topLeft + numberInRow-1+inhRadius;
+        }
+    }else
+        topRight = topLeft+columnsInMatrix-numberInRow+inhRadius;
+
+    bottomLeft = topLeft+(rows_bellow_real+rows_above_real)*columnsInMatrix;
+    bottomRight = topRight+(rows_bellow_real+rows_above_real)*columnsInMatrix; /*console.log('bottomRight: '+bottomRight+'\n= '+topRight+' + ('+rows_above_real+
+     '+'+rows_bellow_real+') *'+columnsInMatrix);*/
+    var edges = [topLeft,topRight,bottomLeft,bottomRight];
+    for(var i in edges)
+        $('[data-col-num="'+edges[i]+'"]').addClass('borderGrey');/*
+     console.log('leftEdge: '+leftEdge+'\ntopEdge: '+topEdge+'\nrightEdge: '+rightEdge+'\nbottomEdge: '+bottomEdge); */
+}

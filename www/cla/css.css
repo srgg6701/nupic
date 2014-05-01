@@ -221,6 +221,11 @@ td{
     text-align:center;
     width: 20px;
 }
+#td-clear{
+    cursor: pointer;
+    font-size: 3em;
+    color: orange;
+}
 #tHeader{
     float: right;
     width: 142px;
